@@ -4,6 +4,8 @@ import cn.hutool.core.bean.BeanUtil;
 import com.wzx.entity.User;
 import com.wzx.service.UserService;
 import com.wzx.util.JwtUtils;
+import io.jsonwebtoken.Claims;
+import java.util.Objects;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
@@ -35,7 +37,12 @@ public class AccountRealm extends AuthorizingRealm {
 
         JwtToken jwtToken = (JwtToken) token;
 
-        String userId = jwtUtils.getClaimByToken((String) jwtToken.getPrincipal()).getSubject();
+        Claims claimByToken = jwtUtils.getClaimByToken((String) jwtToken.getPrincipal());
+        if(Objects.isNull(claimByToken)) {
+            throw new AuthenticationException("token认证错误");
+        }
+
+        String userId = claimByToken.getSubject();
 
         User user = userService.getById(Long.valueOf(userId));
         if (user == null) {

@@ -7,6 +7,8 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -24,9 +26,11 @@ public class FileSystemStorageServiceImpl implements StorageService {
 
     @Override
     public String upload(InputStream is, String filename) throws IOException {
+        List<String> strings = Arrays.asList(filename.split("\\."));
         StringBuilder sb = new StringBuilder();
         String savePath = getCurrentSaveDate();
-        String newFileName = sb.append(UUID.randomUUID()).append("_").append(filename).toString();
+        String newFileName = sb.append(strings.get(0)).append("_").append(UUID.randomUUID()).append(".").append(strings.get(1))
+                .toString();
         Path targetPath = new File(savePath, newFileName).toPath();
         Files.copy(is, targetPath);
         return targetPath.getFileName().toAbsolutePath().toString();
