@@ -30,6 +30,7 @@ public class UserController {
         return Result.succ(user);
     }
 
+    @RequiresAuthentication
     @PostMapping("/save")
     public Result save(@Validated @RequestBody User user) {
         user.setPassword(SecureUtil.md5(user.getPassword()));
