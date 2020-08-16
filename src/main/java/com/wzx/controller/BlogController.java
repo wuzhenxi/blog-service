@@ -85,17 +85,17 @@ public class BlogController {
 
     @RequiresAuthentication
     @PostMapping("/blog/upload")
-    public Result upload(@RequestParam("file") MultipartFile multipartFile) throws IOException {
+    public Result upload(@RequestParam("file") MultipartFile multipartFile, HttpServletRequest request) throws IOException {
         JSONObject result = new JSONObject();
         if (multipartFile.isEmpty()) {
             Assert.notNull(multipartFile, "空文件");
         } else {
             String contentType = multipartFile.getContentType();
             InputStream inputStream = multipartFile.getInputStream();
-            String originalFilename = multipartFile.getOriginalFilename();
-            String systemFileName = storageService.upload(inputStream, originalFilename);
-            result.put("originalFilename", originalFilename);
-            result.put("systemFileName", systemFileName);
+            String filename = multipartFile.getOriginalFilename();
+            String fileUrl = storageService.upload(request, inputStream, filename);
+            result.put("filename", filename);
+            result.put("fileUrl", fileUrl);
         }
         return Result.succ(result);
     }

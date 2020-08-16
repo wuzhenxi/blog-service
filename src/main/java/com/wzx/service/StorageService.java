@@ -6,6 +6,7 @@ package com.wzx.service;
 
 import java.io.IOException;
 import java.io.InputStream;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * File Description.
@@ -16,6 +17,6 @@ import java.io.InputStream;
  */
 public interface StorageService {
 
-    public String upload(InputStream is, String filename) throws IOException;
+    public String upload(HttpServletRequest request, InputStream is, String filename) throws IOException;
 
 }

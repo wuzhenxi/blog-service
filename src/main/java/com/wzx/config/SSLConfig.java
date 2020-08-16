@@ -22,6 +22,9 @@ public class SSLConfig {
     @Value("${server.port}")
     private int serverPort;
 
+    @Value("${listen.http.port}")
+    private int listenHttpPort;
+
     @Bean
     public TomcatServletWebServerFactory tomcatServletWebServerFactory(Connector connector){
         TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory(){
@@ -44,7 +47,7 @@ public class SSLConfig {
         Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
         connector.setScheme("http");
         //Connector监听的http的端口号
-        connector.setPort(8000);
+        connector.setPort(listenHttpPort);
         connector.setSecure(false);
         //监听到http的端口号后转向到的https的端口号
         connector.setRedirectPort(serverPort);
