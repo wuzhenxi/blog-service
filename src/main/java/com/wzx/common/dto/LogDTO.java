@@ -1,5 +1,6 @@
 package com.wzx.common.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import javax.validation.constraints.NotNull;
@@ -19,9 +20,11 @@ public class LogDTO implements Serializable {
     private String method;
 
     @NotNull
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime startDateTime;
 
     @NotNull
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime endDateTime;
 
     private String city;
