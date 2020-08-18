@@ -12,7 +12,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  * @version 1.0
  * @since <pre>2020/8/13</pre>
  */
-@EnableSwagger2
 @EnableKnife4j
 @SpringBootApplication
 public class VueblogApplication {

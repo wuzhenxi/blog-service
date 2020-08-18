@@ -8,12 +8,15 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.common.base.Strings;
 import com.wzx.common.lang.Result;
+import com.wzx.constants.MethodName;
 import com.wzx.entity.Blog;
 import com.wzx.service.BlogService;
 import com.wzx.service.StorageService;
 import com.wzx.shiro.AccountProfile;
 import com.wzx.util.JwtUtils;
 import com.wzx.util.ShiroUtil;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
@@ -35,6 +38,7 @@ import org.springframework.web.multipart.MultipartFile;
  * @since: 14/08/2020
  */
 @Slf4j
+@Api(tags = "博客操作")
 @RestController
 public class BlogController {
 
@@ -49,7 +53,8 @@ public class BlogController {
     private StorageService storageService;
 
     @GetMapping("/blogs")
-    public Result list(@RequestParam(defaultValue = "1") Integer currentPage, HttpServletRequest request) {
+    @ApiOperation(MethodName.QUERY_BLOG)
+    public Result queryBlog(@RequestParam(defaultValue = "1") Integer currentPage, HttpServletRequest request) {
         String loginUserId = null;
         String token = request.getHeader("Authorization");
         if(!Strings.isNullOrEmpty(token)) {
@@ -67,7 +72,8 @@ public class BlogController {
     }
 
     @GetMapping("/blog/{id}")
-    public Result detail(@PathVariable(name = "id") Long id, HttpServletRequest request) {
+    @ApiOperation(MethodName.DETAILS_BLOG)
+    public Result detailBlog(@PathVariable(name = "id") Long id, HttpServletRequest request) {
         String loginUserId = null;
         String token = request.getHeader("Authorization");
         if(!Strings.isNullOrEmpty(token)) {
@@ -85,7 +91,8 @@ public class BlogController {
 
     @RequiresAuthentication
     @PostMapping("/blog/upload")
-    public Result upload(@RequestParam("file") MultipartFile multipartFile, HttpServletRequest request) throws IOException {
+    @ApiOperation(MethodName.UPLOAD_IMAGE)
+    public Result uploadImage(@RequestParam("file") MultipartFile multipartFile, HttpServletRequest request) throws IOException {
         JSONObject result = new JSONObject();
         if (multipartFile.isEmpty()) {
             Assert.notNull(multipartFile, "空文件");
@@ -102,7 +109,8 @@ public class BlogController {
 
     @RequiresAuthentication
     @PostMapping("/blog/edit")
-    public Result edit(@Validated @RequestBody Blog blog) {
+    @ApiOperation(MethodName.EDIT_BLOG)
+    public Result editBlog(@Validated @RequestBody Blog blog) {
         Blog temp = null;
         if(Objects.nonNull(blog.getId())) {
             // 修改
@@ -126,7 +134,8 @@ public class BlogController {
 
     @RequiresAuthentication
     @GetMapping("/blog/delete/{blogId}")
-    public Result delete(@Validated @PathVariable(name = "blogId") Long blogId) {
+    @ApiOperation(MethodName.DELETE_BLOG)
+    public Result deleteBLog(@Validated @PathVariable(name = "blogId") Long blogId) {
         boolean flag = false;
         if (Objects.nonNull(blogId)) {
             Blog temp = blogService.getById(blogId);

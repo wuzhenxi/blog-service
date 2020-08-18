@@ -1,113 +1,90 @@
-create table m_user
-(
-    id         bigint auto_increment
-        primary key,
-    username   varchar(64)  null,
-    avatar     varchar(255) null,
-    email      varchar(64)  null,
-    password   varchar(64)  null,
-    status     int(5)       not null,
-    created    datetime     null,
-    last_login datetime     null
-)
-    charset = utf8;
+/*
+ Navicat Premium Data Transfer
 
-create index UK_USERNAME
-    on m_user (username);
+ Source Server         : huawei
+ Source Server Type    : MySQL
+ Source Server Version : 50646
+ Source Host           : 139.9.176.197:3306
+ Source Schema         : db-it
 
-INSERT INTO `db-it`.m_user (id, username, avatar, email, password, status, created, last_login) VALUES (1, 'jessewu', 'https://image-1300566513.cos.ap-guangzhou.myqcloud.com/upload/images/5a9f48118166308daba8b6da7e466aab.jpg', 'wyyxwzx@163.com', '96e79218965eb72c92a549dd5a330112', 0, '2020-04-20 10:44:01', '2020-08-13 17:19:25');
+ Target Server Type    : MySQL
+ Target Server Version : 50646
+ File Encoding         : 65001
 
+ Date: 19/08/2020 00:16:42
+*/
 
-create table m_blog
-(
-    id          bigint auto_increment
-        primary key,
-    user_id     bigint       not null,
-    title       varchar(255) not null,
-    description varchar(255) not null,
-    content     longtext     null,
-    created     datetime     not null on update CURRENT_TIMESTAMP,
-    status      tinyint      null
-)
-    charset = utf8mb4;
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
 
-INSERT INTO `db-it`.m_blog (id, user_id, title, description, content, created, status) VALUES (1, 1, '生活就像海洋，只有意志坚强的人才能到达彼岸', '这里是摘要哈哈哈', '内容？？？', '2020-08-14 18:41:19', 1);
-INSERT INTO `db-it`.m_blog (id, user_id, title, description, content, created, status) VALUES (2, 1, '最值得学习的博客项目eblog', 'eblog是一个基于Springboot2.1.2开发的博客学习项目，为了让项目融合更多的知识点，达到学习目的，编写了详细的从0到1开发文档。主要学习包括：自定义Freemarker标签，使用shiro+redis完成了会话共享，redis的zset结构完成本周热议排行榜，t-io+websocket完成即时消息通知和群聊，rabbitmq+elasticsearch完成博客内容搜索引擎等。值得学习的地方很多！', '**推荐阅读：**
+-- ----------------------------
+-- Table structure for m_blog
+-- ----------------------------
+DROP TABLE IF EXISTS `m_blog`;
+CREATE TABLE `m_blog` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `user_id` bigint(20) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `description` varchar(255) NOT NULL,
+  `content` longtext,
+  `created` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `status` tinyint(4) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4;
 
-[分享一套SpringBoot开发博客系统源码，以及完整开发文档！速度保存！](https://mp.weixin.qq.com/s/jz6e977xP-OyaAKNjNca8w)
+-- ----------------------------
+-- Records of m_blog
+-- ----------------------------
+BEGIN;
+INSERT INTO `m_blog` VALUES (7, 1, '你真的会写单例模式吗?', '单例模式可能是代码最少的模式了，但是少不一定意味着简单，想要用好、用对单例模式，还真得费一番脑筋。本文对 Java 中常见的单例模式写法做了一个总结，如有错漏之处，恳请读者指正。', '\n\n单例模式可能是代码最少的模式了，但是少不一定意味着简单，想要用好、用对单例模式，还真得费一番脑筋。本文对 Java 中常见的单例模式写法做了一个总结，如有错漏之处，恳请读者指正。\n\n饿汉法\n===\n\n顾名思义，饿汉法就是在第一次引用该类的时候就创建对象实例，而不管实际是否需要创建。代码如下：\n\n```\npublic class Singleton {  \n    private static Singleton = new Singleton();\n    private Singleton() {}\n    public static getSignleton(){\n        return singleton;\n    }\n}\n\n```\n\n这样做的好处是编写简单，但是无法做到延迟创建对象。但是我们很多时候都希望对象可以尽可能地延迟加载，从而减小负载，所以就需要下面的懒汉法：\n', '2020-08-14 18:42:19', 0);
+INSERT INTO `m_blog` VALUES (9, 1, '真正理解Mysql的四种隔离级别@', '事务是应用程序中一系列严密的操作，所有操作必须成功完成，否则在每个操作中所作的所有更改都会被撤消。也就是事务具有原子性，一个事务中的一系列的操作要么全部成功，要么一个都不做。\n\n事务的结束有两种，当事务中的所以步骤全部成功执行时，事务提交。如果其中一个步骤失败，将发生回滚操作，撤消撤消之前到事务开始时的所以操作。', '### 什么是事务  \n\n> 事务是应用程序中一系列严密的操作，所有操作必须成功完成，否则在每个操作中所作的所有更改都会被撤消。也就是事务具有原子性，一个事务中的一系列的操作要么全部成功，要么一个都不做。\n> \n> 事务的结束有两种，当事务中的所以步骤全部成功执行时，事务提交。如果其中一个步骤失败，将发生回滚操作，撤消撤消之前到事务开始时的所以操作。\n\n**事务的 ACID**\n\n事务具有四个特征：原子性（ Atomicity ）、一致性（ Consistency ）、隔离性（ Isolation ）和持续性（ Durability ）。这四个特性简称为 ACID 特性。\n\n> 1 、原子性。事务是数据库的逻辑工作单位，事务中包含的各操作要么都做，要么都不做\n> \n> 2 、一致性。事 务执行的结果必须是使数据库从一个一致性状态变到另一个一致性状态。因此当数据库只包含成功事务提交的结果时，就说数据库处于一致性状态。如果数据库系统 运行中发生故障，有些事务尚未完成就被迫中断，这些未完成事务对数据库所做的修改有一部分已写入物理数据库，这时数据库就处于一种不正确的状态，或者说是 不一致的状态。', '2020-08-14 18:43:19', 0);
+INSERT INTO `m_blog` VALUES (19, 1, '修复照片上传功能', '问题描述：后台不应返回的照片全路径', '>返回全路径会有安全问题，被恶意攻击服务器\n\n后台应返回虚拟路径，配置前端回显照片时，请求照片路径结合mvc的ResourceHandler资源配置设置Location\n\n```@Configuration\npublic class MvcConfig extends WebMvcConfigurationSupport {\n\n    @Value(\"${file.location.path}\")\n    private String filePath;\n\n    @Override\n    public void addResourceHandlers(ResourceHandlerRegistry registry){\n        registry.addResourceHandler(\"/images/**\")\n                .addResourceLocations(\n                        \"file:///\" + filePath.replace(\"\\\\\", \"/\"));\n    }\n}\n\n```\n\n照片上传demo\n\n![1486A40576664C969D073A83A6A123DE_1_105_c.jpg](https://www.wuzhenxicloud.com:8081/images/2020/8/17/1486A405-7666-4C96-9D07-3A83A6A123DE_1_105_c_34e06377-3ce7-44f3-99eb-99b6b037517e.jpg)\n', '2020-08-16 18:44:19', 0);
+INSERT INTO `m_blog` VALUES (22, 1, 'git命令', '常见操作命令', '> 克隆\n```\ngit clone https://xxxxxx.git\n```\n> 检出远程分支到本地\n```\ngit checkout -b dev origin/dev\n```\ndev 本地分支名\norigin/dev 远程dev分支\n> 如果远程新建了一个分支，本地没有该分支。可以利用 git checkout --track origin/branch_name ，这时本地会新建一个分支名叫 branch_name ，会自动跟踪远程的同名分支 branch_name。\n```\ngit checkout --track origin/branch_name\n```\n> 切换本地master分支\n```\ngit checkout master\n```\n> 删除本地dev分支\n```\ngit branch -d dev\n```\n> 删除远程dev分支\n```\ngit branch -r -d origin/dev\ngit push origin :dev\n```\n> 查看所有分支\n```\ngit branch -a\n```\n> 查看所有远程仓\n```\ngit remote -v\n```\n> 添加远程仓\n```\ngit remote add xxx https://xxxxx.git\n```\nxxx 本地仓名\n\n> 本地仓当前分支与远程仓分支绑定\n```\ngit branch --set-upstream-to origin/branch_name\n```\n> 本地仓dev分支与远程仓分支绑定\n```\ngit branch --set-upstream-to dev origin/branch_name\n```\n> 本地仓当前分支与远程仓分支解绑\n```\ngit branch --unset-upstream\n```\n> 在本地当前项目永久存储密码保存账户和密码\n```\ngit config credential.helper store  \n```\n> 在本地当前项目设置账户、邮箱\n```\ngit config user.name XXXX                           \ngit config user.email ***@***.com \n```\n> 在本地全局永久存储密码保存账户和密码\n```\ngit config --global credential.helper store \n```\n> 在本地全局设置账户、邮箱\n```\ngit config --global user.name XXXX                           \ngit config --global user.email ***@***.com \n```\n> 拉取远程origin仓的dev分支\n```\ngit pull origin dev\n```\n> 获取远程origin仓的dev分支\n```\ngit fetch origin dev\n```\n> pull与fetch区别\n```\npull = fetch + merge\n```\n> git提交\n```\ngit commit . -m \"说明\"\n```\n. 所有修改文件\n> git添加\n```\ngit add xxxx\n```\nxxxx 文件路径\n> git推送远程仓dev分支\n```\ngit push origin dev\n```\n> git日志查看\n```\ngit log --stat\n```\n> git文件状态查看\n```\ngit status\n```\n> git查看用户提交统计\n```\ngit shortlog -sn\n```\n> git撤销checkout revert reset\n```\ngit checkout [file]\n```\n恢复文件\n```\ngit checkout [commit] [file]\n```\n恢复某个commit的指定文件\n```\ngit reset [file]\n```\n重置某个文件，与上次commit保持一致\n```\ngit reset [commit]\n```\n重置当前分支的HEAD为指定commit，同时重置暂存区和工作区，与指定commit一致，可用于重新提交\n```\ngit revert [commit]\n```\n撤销commit的\n> git master合并dev\n```\ngit checkout master\ngit pull master\ngit merge dev\n```\n先切换master->pull->merge\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n', '2020-08-18 11:23:05', 0);
+INSERT INTO `m_blog` VALUES (23, 2, '20200726', '深圳官湖村', '![DSC_1.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_1_30d14319-1a07-4ae4-adcb-7c3d778d0eed.jpeg)![DSC_2.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_2_c671932e-87bb-4b89-b82b-7dd640e27599.jpeg)![DSC_4.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_4_df6c5cb4-fdda-45f2-865a-57cb732aea3f.jpeg)![DSC_3.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_3_cb8f6a48-8643-4210-bf00-03c93bd8b525.jpeg)![DSC_5.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_5_adb079e9-7881-412e-b57a-a84f999df4d4.jpeg)![DSC_8.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_8_da256127-e343-46be-b489-6be1fb40ef5e.jpeg)![DSC_9.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_9_36c41b3e-df67-4f22-b641-c2146f8520a7.jpeg)![DSC_38.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_38_a89f9066-0dc6-489a-9966-3c0d0da120b6.jpeg)![DSC_39.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_39_4fc2b01d-c55d-4404-9f73-66b01dee529a.jpeg)![DSC_14.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_14_a95d2ea2-c4c6-41e4-a39a-b9a07a28fda6.jpeg)![DSC_15.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_15_c1522762-bfcf-4b91-bf78-d2821e836cbc.jpeg)![DSC_16.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_16_bc1dbeaa-0e2d-45de-8511-9d1aa2d08092.jpeg)![DSC_6.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_6_71016d9a-af21-4905-9bc7-5d64ad057176.jpeg)![DSC_7.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_7_ccd97896-071d-4c74-8f74-4d4e7b0f44dd.jpeg)![DSC_19.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_19_56ecd507-ef9a-47d2-824a-973649934bfe.jpeg)![DSC_20.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_20_53aa1d68-26f7-473d-95da-7a2cb32467c9.jpeg)![DSC_22.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_22_77102606-f29f-4435-9093-e88940983a90.jpeg)![DSC_10.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_10_c31cecea-16d2-4cb6-a5f6-64d77cd17bd9.jpeg)![DSC_12.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_12_22caabde-0f78-4115-ac5d-ad8d148c1e94.jpeg)![DSC_40.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_40_23c40b79-ec14-41ff-80a4-772f4cb4c62d.jpeg)![DSC_23.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_23_9344ccc9-3f27-4fed-b695-167561d63a69.jpeg)![DSC_17.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_17_e18611fc-43e8-4331-9f3e-bab00289ed88.jpeg)![DSC_18.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_18_afbb1a0a-02f0-4713-8b0a-9999cab22fce.jpeg)![DSC_21.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_21_e97ebdba-1bce-4cd6-838f-00914634712d.jpeg)![DSC_24.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_24_f4390585-a5e3-4a6a-ab02-67e47c60b0d7.jpeg)![DSC_25.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_25_4cb605ac-ba91-4b22-8407-17fe6277d51e.jpeg)![DSC_26.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_26_3e427440-c425-4971-af8e-72475941a873.jpeg)![DSC_27.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_27_2fe0ea02-9c94-4d5a-9258-b95d2fe0f18b.jpeg)![DSC_29.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_29_c42f5390-27b7-450c-bc91-1a303709c909.jpeg)![DSC_28.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_28_54665620-2021-4112-847c-07d3712dd6a1.jpeg)![DSC_31.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_31_1569725e-5eed-4389-b261-1d9573e7fac5.jpeg)![DSC_30.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_30_f880dd14-c137-4ed4-ad2a-8e36e626111c.jpeg)![DSC_32.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_32_bf9b2cc0-12fc-45e7-ad05-d1e0419960a9.jpeg)![DSC_33.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_33_5ac75a4c-f5af-4f53-8198-56521b14ed9a.jpeg)![DSC_35.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_35_d2c2fec6-d9ad-49c8-850a-27ccc749fcea.jpeg)![DSC_36.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_36_4cc5798e-ce58-425c-bd9f-fb1195993be4.jpeg)![DSC_11.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_11_b9896139-7da6-4350-af82-6303a7c89fe9.jpeg)![DSC_37.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_37_77abdbe7-9fdb-4f1b-8346-4e436abdfab0.jpeg)![DSC_13.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_13_06d61914-1ad8-4751-9e76-ac53fee63c94.jpeg)![DSC_34.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_34_d4f95192-7d09-4650-89d1-ca40d4a08235.jpeg)![DSC_41.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_41_e7b93475-8853-4250-9c1a-4d9f5065fdac.jpeg)![DSC_42.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_42_ea2abff6-5faf-417e-8f68-cdbb26526b84.jpeg)![DSC_43.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_43_d63c235f-b170-4ac4-9349-cf4ae19f2e9a.jpeg)![DSC_46.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_46_91d80262-6cde-46db-afce-aca8e46fbbe7.jpeg)![DSC_47.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_47_b0d0222c-43f8-45d3-a371-99c12bc7d37d.jpeg)![DSC_44.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_44_902ad3af-0e58-46a5-ba23-4e35b290b388.jpeg)![DSC_49.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_49_43eadd87-fb58-4306-8eef-0a254e6c7d35.jpeg)![DSC_45.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_45_ce04201f-f514-4b85-ad39-83bec8e2d717.jpeg)![DSC_50.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_50_2abcae80-8c3b-4be2-ac28-a87e3c78daa6.jpeg)![DSC_54.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_54_e623d835-502a-408b-93c6-24d587521b51.jpeg)![DSC_59.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_59_8dd5384c-c2d5-401e-bcf2-3d4d7cf2ec81.jpeg)![DSC_48.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_48_03d96c19-24e8-4e15-8e28-9fa50c17f886.jpeg)![DSC_51.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_51_2ab597a7-a6c9-4ca3-978b-9a85fcf45ac2.jpeg)![DSC_62.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_62_0c302356-6742-44bd-8274-3bde4c5cf3f4.jpeg)![DSC_63.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_63_0dec87b5-423d-40b4-9cbd-7620a1231d23.jpeg)![DSC_64.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_64_a23ca2f6-b4a5-469f-a043-c6b53b0d55e6.jpeg)![DSC_52.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_52_a19baed6-806c-468c-9040-697d4fb8f36b.jpeg)![DSC_65.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_65_e059f110-7b71-49da-812b-3d63bbb2a1c5.jpeg)![DSC_53.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_53_a27c095d-e309-408c-961e-0c36f4f6dcf3.jpeg)![DSC_66.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_66_5cd906ac-4c61-4c95-932f-59780c62425f.jpeg)![DSC_55.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_55_093201f0-d18f-415c-bbb7-5477e134e9c3.jpeg)![DSC_58.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_58_57a16ca5-c8cc-4843-8290-fee5dfcdcfe3.jpeg)![DSC_60.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_60_8f59ec1c-e9da-4b97-8ad1-f9d3082d319e.jpeg)![DSC_73.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_73_a0a83e83-ab44-477f-97e9-a350ba034334.jpeg)![DSC_74.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_74_6b2e0b94-a25e-4ceb-b78b-f3937f8b1f85.jpeg)![DSC_67.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_67_161a9132-a24d-4f71-a3fd-dcdb63f2becb.jpeg)![DSC_56.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_56_b55cc39c-1084-4777-8448-7fbb4f720657.jpeg)![DSC_57.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_57_7701eb56-1949-43cc-a9f5-a56de2f0ebbd.jpeg)![DSC_68.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_68_632ff377-39cf-42c6-9dcc-6f64bcf5a67d.jpeg)![DSC_76.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_76_854d5d54-ba43-4528-b9f2-c42b4038ea17.jpeg)![DSC_70.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_70_1646da8f-ea52-4ac9-ae85-654e301bb306.jpeg)![DSC_71.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_71_ddd8e579-d872-4bf4-b79b-e59d2d87875c.jpeg)![DSC_98.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_98_bc2d7256-9cc6-48e9-9e54-0c5dacea56f0.jpeg)![DSC_100.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_100_0f34b6f8-d038-47c9-91f7-4b8d6d8cb835.jpeg)![DSC_72.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_72_f8692851-7702-4a27-a20a-209de77101f8.jpeg)![DSC_75.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_75_e1d76c63-f51d-4f28-ae4f-9e2a4d2bb19a.jpeg)![DSC_79.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_79_8eb14ea8-8b0a-4ace-9b89-83ee0988e63d.jpeg)![DSC_61.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_61_031fc417-b4b3-402f-8c3b-558ac8ecc8d0.jpeg)![DSC_99.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_99_8e5f21c5-2bdb-4b51-b611-077ecb792a63.jpeg)![DSC_77.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_77_02406348-5f0f-4b6a-af71-e8a1efd92577.jpeg)![DSC_84.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_84_f9da5754-dd21-4000-846b-28ce85fbdb86.jpeg)![DSC_85.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_85_5f1fe816-9346-4e7f-b3f4-28a0ffc80e18.jpeg)![DSC_86.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_86_20cdcd31-b648-4a85-9484-2e5b67f95ff3.jpeg)![DSC_69.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_69_5c955a47-f3c0-4b07-a784-76114fe38715.jpeg)![DSC_80.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_80_a2b66b7f-7a71-4164-88d5-7f1a4adf7710.jpeg)![DSC_81.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_81_f577303e-eb15-40a5-8deb-42768edf2d01.jpeg)![DSC_83.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_83_613c58f2-992a-4542-96c1-85aeba1facc8.jpeg)![DSC_88.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_88_e5922053-e2b6-418c-8f0b-349304e7649e.jpeg)![DSC_90.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_90_5252b1c5-bd18-42b7-b855-9527aa57e11e.jpeg)![DSC_92.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_92_97c28ff7-3d22-4f95-a677-ed4c3050db2a.jpeg)![DSC_95.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_95_dbb7bcd3-3a14-4a5c-94d2-fb26c38af309.jpeg)![DSC_87.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_87_b4a634a8-90e8-4891-8a01-2ace0865b025.jpeg)![DSC_97.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_97_4de2ff94-2ade-457a-a16b-541882e85034.jpeg)![DSC_93.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_93_a84685c8-1539-4313-9acd-87e415ddd2f8.jpeg)![DSC_89.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_89_1374ef08-9bda-4a9d-ae87-02e9b154c23f.jpeg)![DSC_91.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_91_d9f46292-7cd9-4f38-b1d0-b7b025798bcd.jpeg)![DSC_94.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_94_ec7ffdd9-3251-40e8-9a97-987a37c66b49.jpeg)![DSC_96.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_96_1464380d-eca9-4e93-b60b-3066b03f03c0.jpeg)![DSC_78.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_78_90cd2573-1774-4284-9706-4b0f94c79d1e.jpeg)![DSC_82.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_82_91265481-d6ac-4721-a286-f8c3a5372859.jpeg)![DSC_102.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_102_1c6a12db-2b0e-467b-9874-030fa5694e3a.jpeg)![DSC_103.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_103_e4f37707-0425-46bf-89ea-1e4556c8afb5.jpeg)![DSC_104.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_104_02d1da43-ef0b-48d8-9932-7b07f46b6c27.jpeg)![DSC_106.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_106_63cfa46b-36ea-4709-9592-c3530b2e6eb7.jpeg)![DSC_110.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_110_9dee7bef-7bcd-4e9a-af64-08c3dc1b7435.jpeg)![DSC_111.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_111_684f835b-721d-4e50-9a32-83f6e0acae0f.jpeg)![DSC_112.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_112_70f0c980-3172-4617-9ae4-4d1143fe7cd1.jpeg)![DSC_105.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_105_ee94d301-c069-471f-a688-c524d0d725bd.jpeg)![DSC_107.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_107_01790a3f-6187-4053-bfc4-10e2a4e9baa9.jpeg)![DSC_108.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_108_4d2e45a9-7f49-4f49-817a-423d2c06ca8a.jpeg)![DSC_117.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_117_1c9709ad-1064-40b9-8f99-10cad085ba54.jpeg)![DSC_109.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_109_11fe69e4-0845-49ff-a52f-821f93d0c4e0.jpeg)![DSC_119.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_119_848e23fe-dbc3-49f7-b130-172f1ea04b7e.jpeg)![DSC_113.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_113_85d8270a-649d-43ae-95ab-17a2e93f9c32.jpeg)![DSC_123.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_123_5464a7fe-c855-4939-a7da-1e7187577a2b.jpeg)![DSC_124.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_124_e5bcf224-b8ba-4304-94b4-7b4a98613c7f.jpeg)![DSC_126.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_126_0438abd7-52ac-4834-a97b-1e62e98aa1b5.jpeg)![DSC_116.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_116_9760050c-0208-41c7-9fd2-6b380afa5717.jpeg)![DSC_128.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_128_3c2a5aca-af9d-4b9b-a2c1-b4aff1a380d8.jpeg)![DSC_120.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_120_2f48035b-86bb-49b4-9902-5adfef413953.jpeg)![DSC_121.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_121_9e72d094-7afd-445c-9e68-0083a2630bbe.jpeg)![DSC_131.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_131_c5df8d03-1981-4e4f-942c-dea3ed944aca.jpeg)![DSC_122.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_122_5ad8d3b3-e2df-4cfa-aaf4-6be6bb0b4956.jpeg)![DSC_114.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_114_5fa33637-bfe1-46f4-9702-0cfe152ad636.jpeg)![DSC_136.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_136_dda670ee-2a17-4399-8997-f18e7d951e05.jpeg)![DSC_125.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_125_240ef599-ef75-4867-ab6b-ed169ff7fdfa.jpeg)![DSC_115.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_115_76f2f8f0-b290-420f-af88-0600a5289220.jpeg)![DSC_139.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_139_7e3fce7a-cc18-44c4-894c-e76934000181.jpeg)![DSC_118.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_118_2a83c797-b1a4-4bb9-be43-4ea7ebcc9df2.jpeg)![DSC_129.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_129_4773e9c6-91e8-45b4-9ace-aefaf4b852aa.jpeg)![DSC_144.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_144_e5d26d91-4e88-4dfc-9898-5410578026ad.jpeg)![DSC_145.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_145_7dc54d8b-5718-4711-84c1-300c9699408b.jpeg)![DSC_130.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_130_1d323710-ac12-4053-9810-eb024cdd0757.jpeg)![DSC_132.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_132_ab50f613-062e-4a29-b00c-99a32c63c4f9.jpeg)![DSC_133.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_133_e274f66d-0c54-4df3-aee3-2130229c4a0f.jpeg)![DSC_134.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_134_13ace7be-3bc6-4294-9b8d-ceaeb49a5c33.jpeg)![DSC_135.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_135_01f20dcb-d78e-4907-9976-18eabc44295a.jpeg)![DSC_137.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_137_faa9fe47-bcf1-4fad-a55a-ebb74d423cdc.jpeg)![DSC_138.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_138_689ba1b0-2c15-4a39-b536-cf5734672bd6.jpeg)![DSC_127.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_127_3de6c543-76ce-447e-96f2-c4bceb607264.jpeg)![DSC_140.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_140_b57104df-891f-4846-a53e-0e80cdda582e.jpeg)![DSC_141.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_141_72c72b2e-640c-4483-9c1f-56cc5bc49449.jpeg)![DSC_142.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_142_20104d16-ae06-4b00-80a5-1748ffc7ebfd.jpeg)![DSC_143.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_143_49bfcf42-20dc-4462-adbe-f01e0026b7ab.jpeg)![DSC_155.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_155_48cb9256-abd6-4627-a2d2-879ff529debe.jpeg)![DSC_157.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_157_9fd77f8d-e3d9-42b1-82df-d407e591c692.jpeg)![DSC_165.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_165_dd3bed0f-27c6-4a7a-8a8c-4d2e3c7c181a.jpeg)![DSC_168.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_168_5cb5e5be-073c-44db-ae40-d156dd386771.jpeg)![DSC_169.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_169_31b0362c-3265-40ee-a97d-889454d7bafa.jpeg)![DSC_170.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_170_b5c16453-ade3-475a-af72-ee5fbc67d10e.jpeg)![DSC_171.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_171_1709d302-3522-4b86-b6ad-ae6ed02ede94.jpeg)![DSC_177.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_177_53938b64-7538-48fe-9d0d-63877b678ddb.jpeg)![DSC_147.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_147_0a7fc3d1-176a-4b12-85a4-b9992c1f3f50.jpeg)![DSC_180.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_180_325bdf98-0623-403f-b205-937a48d2b2c0.jpeg)![DSC_149.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_149_a3ce9b70-c2aa-410f-b653-52da4ef094fc.jpeg)![DSC_150.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_150_43e99aa0-270c-4e42-baa9-7c72cbf5f3cf.jpeg)![DSC_151.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_151_a9256358-28ec-49c9-bd39-155a7e5a5d47.jpeg)![DSC_152.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_152_b3c92374-f9bd-4d4b-9764-a2b658bb9e07.jpeg)![DSC_154.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_154_0187231a-cec3-43dc-83fc-428f87f7dc74.jpeg)![DSC_153.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_153_9fc3b2ef-9691-449f-b7d4-f9ea80f9afdd.jpeg)![DSC_156.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_156_3aa814d4-1154-46b0-8306-3a6462e6d26e.jpeg)![DSC_158.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_158_bcd4eff0-669e-4c3b-b692-2e866fa3c13b.jpeg)![DSC_160.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_160_d246da06-b10f-4ed6-bceb-2e2365f81d84.jpeg)![DSC_159.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_159_8daa6c86-bf69-4f31-86e8-fd41647acb60.jpeg)![DSC_161.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_161_14d8169a-f3e0-44fb-bb4e-ad1c84f2a130.jpeg)![DSC_162.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_162_2d74c7d0-b0e7-4ca1-ac7d-9750ae56042a.jpeg)![DSC_163.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_163_6bf1d818-6507-4d34-b8fa-dd3a3aade4b6.jpeg)![DSC_166.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_166_9a4a12a2-9b4c-4c3c-8f22-1a7aea4b5c30.jpeg)![DSC_164.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_164_b0a3ab51-e6aa-44c7-9d41-007a1d8947e2.jpeg)![DSC_167.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_167_71631a8d-26cc-469b-9d06-f0ba918a6618.jpeg)![DSC_172.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_172_b318eb6d-3a80-4f26-bd15-7e1f846681d4.jpeg)![DSC_173.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_173_1deff041-9aa9-4fc4-88c2-a37c63d521f0.jpeg)![DSC_174.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_174_bb38faca-9ad0-413a-8152-dd58d515dc8b.jpeg)![DSC_175.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_175_442eb381-80d6-4172-8036-e24e2eec0544.jpeg)![DSC_176.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_176_92bc145e-46b4-4677-9d2c-aadc8e02c303.jpeg)![DSC_178.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_178_572645cb-b61c-4bd5-9411-d14f58a5619f.jpeg)![DSC_179.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_179_4740a811-f37d-4cc8-81da-5e4f2d6f6c07.jpeg)![DSC_183.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_183_a81da127-1020-4577-b07a-7393cda97ff0.jpeg)![DSC_182.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_182_ddc91754-6542-45d7-a88c-d2629b02f884.jpeg)![DSC_181.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_181_6df41326-9e03-4d41-8454-73f6fb4e4bd4.jpeg)![DSC_186.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_186_1d39ca49-00c7-4f28-acd6-b33288fca973.jpeg)![DSC_184.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_184_4b0c5f23-bc4c-4a37-ad3a-0f7f4b009704.jpeg)![DSC_185.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_185_00559a23-5904-472e-9955-9bf32b68b33a.jpeg)![DSC_188.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_188_565d4d50-fa55-4821-833c-d956eeac1d24.jpeg)![DSC_189.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_189_2a5cedf7-ab26-45e2-bddf-b53945291f7e.jpeg)![DSC_146.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_146_4b63ba50-9880-43de-a332-853e76b4f225.jpeg)![DSC_148.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_148_3ec0143e-1829-4433-8a07-f49ed6acc4bd.jpeg)![DSC_187.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_187_ed41b522-1ccf-493b-b655-ed864dc761be.jpeg)![DSC_190.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_190_234ae612-f61f-41c9-a49b-40cd9a375062.jpeg)![DSC_191.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_191_d24a5a35-dc4a-42a0-b07f-d9a14b1cd8b1.jpeg)![DSC_192.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_192_67dae6b9-da84-40ea-be4e-c6a391bcb583.jpeg)![DSC_193.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_193_338bb859-61d4-4d7f-b9ba-46d6f3547116.jpeg)![DSC_194.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_194_d24e0f18-fc61-441f-85fd-f0124fdfb2d2.jpeg)![DSC_195.jpeg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_195_a93cc1ad-9129-4b32-bd21-de8aedbfdb3d.jpeg)![DSC_101.jpg](https://www.wuzhenxicloud.com:8081/images/2020/8/18/DSC_101_f624e244-c1cf-46cb-ab5e-4c14f6affcd3.jpg)', '2020-07-27 15:32:13', 1);
+COMMIT;
 
-[Github上最值得学习的100个Java开源项目，涵盖各种技术栈！](https://mp.weixin.qq.com/s/N-U0TaEUXnBFfBsmt_OESQ)
+-- ----------------------------
+-- Table structure for m_log
+-- ----------------------------
+DROP TABLE IF EXISTS `m_log`;
+CREATE TABLE `m_log` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  `operater` varchar(255) COLLATE utf8_bin NOT NULL COMMENT '访问者',
+  `method` varchar(255) COLLATE utf8_bin NOT NULL COMMENT '访问API',
+  `ip` varchar(255) COLLATE utf8_bin NOT NULL COMMENT '访问者IP',
+  `operation_time` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '访问时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
-[2020年最新的常问企业面试题大全以及答案](https://mp.weixin.qq.com/s/lR5LC5GnD2Gs59ecV5R0XA)', '2020-08-14 18:41:19', 1);
-INSERT INTO `db-it`.m_blog (id, user_id, title, description, content, created, status) VALUES (3, 1, '公众号MarkerHub文章索引', '梳理Java知识，解析开源项目！ 公众号【MarkerHub】的文章分类索引，直联公众号文章链接！https://github.com/MarkerHub/JavaIndex', '**推荐阅读：**
+-- ----------------------------
+-- Records of m_log
+-- ----------------------------
+BEGIN;
+COMMIT;
 
-[分享一套SpringBoot开发博客系统源码，以及完整开发文档！速度保存！](https://mp.weixin.qq.com/s/jz6e977xP-OyaAKNjNca8w)
+-- ----------------------------
+-- Table structure for m_user
+-- ----------------------------
+DROP TABLE IF EXISTS `m_user`;
+CREATE TABLE `m_user` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `username` varchar(64) DEFAULT NULL,
+  `avatar` varchar(255) DEFAULT NULL,
+  `email` varchar(64) DEFAULT NULL,
+  `password` varchar(64) DEFAULT NULL,
+  `status` int(5) NOT NULL,
+  `created` datetime DEFAULT NULL,
+  `last_login` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `UK_USERNAME` (`username`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
-[Github上最值得学习的100个Java开源项目，涵盖各种技术栈！](https://mp.weixin.qq.com/s/N-U0TaEUXnBFfBsmt_OESQ)
+-- ----------------------------
+-- Records of m_user
+-- ----------------------------
+BEGIN;
+INSERT INTO `m_user` VALUES (1, 'jessewu', 'https://image-1300566513.cos.ap-guangzhou.myqcloud.com/upload/images/5a9f48118166308daba8b6da7e466aab.jpg', 'wyyxwzx@163.com', '96e79218965eb72c92a549dd5a330112', 1, '2020-04-20 10:44:01', '2020-08-13 17:19:25');
+INSERT INTO `m_user` VALUES (2, 'cww', 'https://image-1300566513.cos.ap-guangzhou.myqcloud.com/upload/images/5a9f48118166308daba8b6da7e466aab.jpg', 'chenwenwu1@huawei.com', 'b1e26968660ed148a263b018cab894ce', 1, '2020-08-18 12:17:35', '2020-08-18 12:17:49');
+COMMIT;
 
-[2020年最新的常问企业面试题大全以及答案](https://mp.weixin.qq.com/s/lR5LC5GnD2Gs59ecV5R0XA)', '2020-08-14 18:41:19', 1);
-INSERT INTO `db-it`.m_blog (id, user_id, title, description, content, created, status) VALUES (7, 1, '你真的会写单例模式吗?', '单例模式可能是代码最少的模式了，但是少不一定意味着简单，想要用好、用对单例模式，还真得费一番脑筋。本文对 Java 中常见的单例模式写法做了一个总结，如有错漏之处，恳请读者指正。', '> 作者：吃桔子的攻城狮 来源：http://www.tekbroaden.com/singleton-java.html
-
-
-单例模式可能是代码最少的模式了，但是少不一定意味着简单，想要用好、用对单例模式，还真得费一番脑筋。本文对 Java 中常见的单例模式写法做了一个总结，如有错漏之处，恳请读者指正。
-
-饿汉法
-===
-
-顾名思义，饿汉法就是在第一次引用该类的时候就创建对象实例，而不管实际是否需要创建。代码如下：
-
-```
-public class Singleton {
-    private static Singleton = new Singleton();
-    private Singleton() {}
-    public static getSignleton(){
-        return singleton;
-    }
-}
-
-```
-
-这样做的好处是编写简单，但是无法做到延迟创建对象。但是我们很多时候都希望对象可以尽可能地延迟加载，从而减小负载，所以就需要下面的懒汉法：
-', '2020-08-14 18:41:19', 1);
-INSERT INTO `db-it`.m_blog (id, user_id, title, description, content, created, status) VALUES (9, 1, '真正理解Mysql的四种隔离级别@', '事务是应用程序中一系列严密的操作，所有操作必须成功完成，否则在每个操作中所作的所有更改都会被撤消。也就是事务具有原子性，一个事务中的一系列的操作要么全部成功，要么一个都不做。
-
-事务的结束有两种，当事务中的所以步骤全部成功执行时，事务提交。如果其中一个步骤失败，将发生回滚操作，撤消撤消之前到事务开始时的所以操作。', '### 什么是事务
-
-> 事务是应用程序中一系列严密的操作，所有操作必须成功完成，否则在每个操作中所作的所有更改都会被撤消。也就是事务具有原子性，一个事务中的一系列的操作要么全部成功，要么一个都不做。
->
-> 事务的结束有两种，当事务中的所以步骤全部成功执行时，事务提交。如果其中一个步骤失败，将发生回滚操作，撤消撤消之前到事务开始时的所以操作。
-
-**事务的 ACID**
-
-事务具有四个特征：原子性（ Atomicity ）、一致性（ Consistency ）、隔离性（ Isolation ）和持续性（ Durability ）。这四个特性简称为 ACID 特性。
-
-> 1 、原子性。事务是数据库的逻辑工作单位，事务中包含的各操作要么都做，要么都不做
->
-> 2 、一致性。事 务执行的结果必须是使数据库从一个一致性状态变到另一个一致性状态。因此当数据库只包含成功事务提交的结果时，就说数据库处于一致性状态。如果数据库系统 运行中发生故障，有些事务尚未完成就被迫中断，这些未完成事务对数据库所做的修改有一部分已写入物理数据库，这时数据库就处于一种不正确的状态，或者说是 不一致的状态。', '2020-08-15 01:21:17', 1);
-INSERT INTO `db-it`.m_blog (id, user_id, title, description, content, created, status) VALUES (10, 1, '博客项目eblog讲解视频上线啦，长达17个小时！！', '1. 慕课网免费资源好久都没更新了，新教程大都付费
-2. B站上的视频繁多，通过收藏和弹幕数量通常很容易判断出视频是否优质
-3. 讲真，B站的弹幕文化，让我觉得，我不是一个在学习，自古人才出评论。哈哈哈
-4. B站视频通常广告少，up主的用心录制，通常只为了你关注他', 'ok，再回到我们的eblog项目，源码、文档、视频我都开源出来了。来些基本操作：github上给个star，B站视频给个三连支持咧。
-
-eblog源码：https://github.com/MarkerHub/eblog
-
-点击这里：[10+篇完整开发文档](https://mp.weixin.qq.com/mp/homepage?__biz=MzIwODkzOTc1MQ==&hid=1&sn=8e512316c3dfe140e636d0c996951166)
-
-![](//image-1300566513.cos.ap-guangzhou.myqcloud.com/upload/images/20200508/c290d945b7d24c79b172759bdb5b94e0.png)
-
-视频讲解：（记得关注我噢！）
-
-https://www.bilibili.com/video/BV1ri4y1x71A
-
-![](//image-1300566513.cos.ap-guangzhou.myqcloud.com/upload/images/20200508/983b5abc1c934360a1a1362347a275f7.png)
-
-项目其实还很多bug的，哈哈，我还需要进行二次迭代，到时候再发迭代文档出来。
-
-关注下我的B站，作为一个自媒体的自由职业者，没有什么比涨粉更让我开心的了，嘻嘻。
-
-近期即将推出的视频教程：
-
-1. 搭建脚手架，前后端分离首秀
-2. Shiro入门到精通教程
-3. SpringBoot2.2.6最新入门教程', '2020-08-14 18:41:19', 1);
-INSERT INTO `db-it`.m_blog (id, user_id, title, description, content, created, status) VALUES (17, 1, 'demo', 'test111', 'dfafdfafa', '2020-08-15 02:07:35', 1);
+SET FOREIGN_KEY_CHECKS = 1;
