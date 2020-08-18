@@ -52,7 +52,7 @@ public class AccountController {
         }
         String jwt = jwtUtils.generateToken(user.getId());
         user.setLastLogin(LocalDateTime.now());
-        userService.save(user);
+        userService.updateById(user);
 
         response.setHeader("Authorization", jwt);
         response.setHeader("Access-control-Expose-Headers", "Authorization");
