@@ -39,4 +39,15 @@ public class LogInfo implements Serializable {
 
     private LocalDateTime operationTime;
 
+    private String country;
+
+    private String region;
+
+    private String city;
+
+    private String cityId;
+
+    private String isp;
+
+
 }

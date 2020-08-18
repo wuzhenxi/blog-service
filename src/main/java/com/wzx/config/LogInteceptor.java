@@ -3,6 +3,7 @@ package com.wzx.config;
 import com.google.common.base.Strings;
 import com.wzx.constants.EnumValues;
 import com.wzx.constants.EnumValues.EnumMethodName;
+import com.wzx.dto.IPDataDTO;
 import com.wzx.entity.LogInfo;
 import com.wzx.entity.User;
 import com.wzx.service.LogInfoService;
@@ -11,6 +12,7 @@ import com.wzx.util.JwtUtils;
 import com.wzx.util.RequestUtils;
 import java.net.UnknownHostException;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +37,9 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @Slf4j
 public class LogInteceptor {
+
+    @Autowired
+    private RequestUtils requestUtils;
 
     @Autowired
     private LogInfoService logInfoService;
@@ -63,7 +68,9 @@ public class LogInteceptor {
         logInfo.setMethod(methodNameCN);
         logInfo.setOperationTime(LocalDateTime.now());
         User loginUser = new User();
-        String requestIp = RequestUtils.getRequestIp(request);
+        String requestIp = requestUtils.getRequestIp(request);
+        IPDataDTO ipDataDTO = requestUtils.queryLocationByIpForm(requestIp);
+        handlerIPDataInfo(ipDataDTO, logInfo);
         String token = request.getHeader("Authorization");
         if(!Strings.isNullOrEmpty(token)) {
             String loginUserId = jwtUtils.getClaimByToken(token).getSubject();
@@ -76,6 +83,16 @@ public class LogInteceptor {
         logInfoService.save(logInfo);
         log.info("doAfterReturning(joinPoint) {}, time used {}ms", joinPoint.getSignature(),
                 (System.currentTimeMillis() - time.get()));
+    }
+
+    private void handlerIPDataInfo(IPDataDTO ipDataDTO, LogInfo logInfo) {
+        if(Objects.nonNull(ipDataDTO.getData())) {
+            logInfo.setCountry(ipDataDTO.getData().getCountry());
+            logInfo.setRegion(ipDataDTO.getData().getRegion());
+            logInfo.setCity(ipDataDTO.getData().getCity());
+            logInfo.setCityId(ipDataDTO.getData().getCity_id());
+            logInfo.setIsp(ipDataDTO.getData().getIsp());
+        }
     }
 
     /*@Around("execution(* com.wzx.controller..*.*(..))")

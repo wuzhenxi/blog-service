@@ -11,7 +11,7 @@
  Target Server Version : 50646
  File Encoding         : 65001
 
- Date: 19/08/2020 00:16:42
+ Date: 19/08/2020 01:42:53
 */
 
 SET NAMES utf8mb4;
@@ -53,13 +53,21 @@ CREATE TABLE `m_log` (
   `method` varchar(255) COLLATE utf8_bin NOT NULL COMMENT '访问API',
   `ip` varchar(255) COLLATE utf8_bin NOT NULL COMMENT '访问者IP',
   `operation_time` datetime NOT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '访问时间',
+  `country` varchar(255) COLLATE utf8_bin NOT NULL COMMENT '访问者国家',
+  `city` varchar(255) COLLATE utf8_bin NOT NULL COMMENT '访问者城市',
+  `isp` varchar(255) COLLATE utf8_bin NOT NULL COMMENT '访问者网络运营商',
+  `region` varchar(255) COLLATE utf8_bin NOT NULL COMMENT '访问者省份',
+  `city_id` varchar(255) COLLATE utf8_bin NOT NULL COMMENT '访问者邮政编码',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- ----------------------------
 -- Records of m_log
 -- ----------------------------
 BEGIN;
+INSERT INTO `m_log` VALUES (4, 'guest', '查看博客', '127.0.0.1', '2020-08-19 01:40:08', 'XX', '内网IP', '内网IP', 'XX', 'local');
+INSERT INTO `m_log` VALUES (5, 'guest', '查看博客', '127.0.0.1', '2020-08-19 01:41:47', 'XX', '内网IP', '内网IP', 'XX', 'local');
+INSERT INTO `m_log` VALUES (6, 'guest', '查看博客', '127.0.0.1', '2020-08-19 01:42:00', 'XX', '内网IP', '内网IP', 'XX', 'local');
 COMMIT;
 
 -- ----------------------------
