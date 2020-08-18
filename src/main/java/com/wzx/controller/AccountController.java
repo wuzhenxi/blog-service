@@ -3,7 +3,7 @@ package com.wzx.controller;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.crypto.SecureUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.wzx.common.dto.LoginDto;
+import com.wzx.common.dto.LoginDTO;
 import com.wzx.common.lang.Result;
 import com.wzx.constants.MethodName;
 import com.wzx.entity.User;
@@ -43,7 +43,7 @@ public class AccountController {
 
     @PostMapping("/login")
     @ApiOperation(MethodName.USER_LOGIN)
-    public Result login(@Validated @RequestBody LoginDto loginDto, HttpServletResponse response) {
+    public Result login(@Validated @RequestBody LoginDTO loginDto, HttpServletResponse response) {
         User user = userService.getOne(new QueryWrapper<User>().eq("username", loginDto.getUsername()));
         Assert.notNull(user, "用户不存在");
 

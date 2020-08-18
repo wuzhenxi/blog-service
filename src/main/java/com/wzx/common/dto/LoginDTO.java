@@ -11,7 +11,7 @@ import java.io.Serializable;
  * @since: 14/08/2020
  */
 @Data
-public class LoginDto implements Serializable {
+public class LoginDTO implements Serializable {
 
     @NotBlank(message = "昵称不能为空")
     private String username;
