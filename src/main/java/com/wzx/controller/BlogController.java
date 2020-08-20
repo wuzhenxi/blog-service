@@ -54,18 +54,19 @@ public class BlogController {
 
     @GetMapping("/blogs")
     @ApiOperation(MethodName.QUERY_BLOG)
-    public Result queryBlog(@RequestParam(defaultValue = "1") Integer currentPage, HttpServletRequest request) {
+    public Result queryBlog(@RequestParam(defaultValue = "1") Integer currentPage,
+            @RequestParam(defaultValue = "5") Integer pageSize, HttpServletRequest request) {
         String loginUserId = null;
         String token = request.getHeader("Authorization");
-        if(!Strings.isNullOrEmpty(token)) {
+        if (!Strings.isNullOrEmpty(token)) {
             loginUserId = jwtUtils.getClaimByToken(token).getSubject();
         }
         // 未登录，仅可看公开博客
         QueryWrapper<Blog> blogQueryWrapper = new QueryWrapper<Blog>().eq(STATUS, 0);
-        if(Objects.nonNull(loginUserId)) {
+        if (Objects.nonNull(loginUserId)) {
             blogQueryWrapper.or().eq("user_id", loginUserId);
         }
-        Page page = new Page(currentPage, 5);
+        Page page = new Page(currentPage, pageSize);
         IPage pageData = blogService.page(page, blogQueryWrapper.orderByDesc("created"));
 
         return Result.succ(pageData);
