@@ -20,7 +20,7 @@ public interface EnumValues {
         DELETE_USER(MethodName.DELETE_USER, "deleteUser"),
         QUERY_BLOG(MethodName.QUERY_BLOG, "queryBlog"),
         DETAILS_BLOG(MethodName.DETAILS_BLOG, "detailBlog"),
-        UPLOAD_IMAGE(MethodName.UPLOAD_IMAGE, "uploadImage"),
+        UPLOAD_IMAGE(MethodName.UPLOAD_FILE, "uploadFile"),
         EDIT_BLOG(MethodName.EDIT_BLOG, "editBlog"),
         DELETE_BLOG(MethodName.DELETE_BLOG, "deleteBLog"),
         UNKNOW_METHOD("未知方法","unknowMethod");

@@ -17,6 +17,6 @@ import javax.servlet.http.HttpServletRequest;
  */
 public interface StorageService {
 
-    public String upload(HttpServletRequest request, InputStream is, String filename) throws IOException;
+    public String upload(HttpServletRequest request, InputStream is, String filename, String contentType) throws IOException;
 
 }

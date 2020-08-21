@@ -92,8 +92,8 @@ public class BlogController {
 
     @RequiresAuthentication
     @PostMapping("/blog/upload")
-    @ApiOperation(MethodName.UPLOAD_IMAGE)
-    public Result uploadImage(@RequestParam("file") MultipartFile multipartFile, HttpServletRequest request) throws IOException {
+    @ApiOperation(MethodName.UPLOAD_FILE)
+    public Result uploadFile(@RequestParam("file") MultipartFile multipartFile, HttpServletRequest request) throws IOException {
         JSONObject result = new JSONObject();
         if (multipartFile.isEmpty()) {
             Assert.notNull(multipartFile, "空文件");
@@ -101,7 +101,7 @@ public class BlogController {
             String contentType = multipartFile.getContentType();
             InputStream inputStream = multipartFile.getInputStream();
             String filename = multipartFile.getOriginalFilename();
-            String fileUrl = storageService.upload(request, inputStream, filename);
+            String fileUrl = storageService.upload(request, inputStream, filename, contentType);
             result.put("filename", filename);
             result.put("fileUrl", fileUrl);
         }

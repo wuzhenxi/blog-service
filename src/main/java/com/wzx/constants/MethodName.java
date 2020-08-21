@@ -15,7 +15,7 @@ public class MethodName {
     public static final String DELETE_USER = "删除用户";
     public static final String QUERY_BLOG = "查看博客";
     public static final String DETAILS_BLOG = "博客详情";
-    public static final String UPLOAD_IMAGE = "上传照片";
+    public static final String UPLOAD_FILE = "上传文件";
     public static final String EDIT_BLOG = "编辑博客";
     public static final String DELETE_BLOG = "删除博客";
 }
