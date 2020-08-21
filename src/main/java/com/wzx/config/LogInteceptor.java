@@ -87,11 +87,11 @@ public class LogInteceptor {
 
     private void handlerIPDataInfo(IPDataDTO ipDataDTO, LogInfo logInfo) {
         if(Objects.nonNull(ipDataDTO.getData())) {
-            logInfo.setCountry(Optional.ofNullable(ipDataDTO.getData().getCountry()).orElse(""));
-            logInfo.setRegion(Optional.ofNullable(ipDataDTO.getData().getRegion()).orElse(""));
-            logInfo.setCity(Optional.ofNullable(ipDataDTO.getData().getCity()).orElse(""));
-            logInfo.setCityId(Optional.ofNullable(ipDataDTO.getData().getCity_id()).orElse(""));
-            logInfo.setIsp(Optional.ofNullable(ipDataDTO.getData().getIsp()).orElse(""));
+            logInfo.setCountry(Optional.ofNullable(ipDataDTO.getData().getCountry()).orElse("未知"));
+            logInfo.setRegion(Optional.ofNullable(ipDataDTO.getData().getRegion()).orElse("未知"));
+            logInfo.setCity(Optional.ofNullable(ipDataDTO.getData().getCity()).orElse("未知"));
+            logInfo.setCityId(Optional.ofNullable(ipDataDTO.getData().getCity_id()).orElse("未知"));
+            logInfo.setIsp(Optional.ofNullable(ipDataDTO.getData().getIsp()).orElse("未知"));
         }
     }
 
