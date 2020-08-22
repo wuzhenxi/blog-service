@@ -23,6 +23,7 @@ public interface EnumValues {
         EDIT_BLOG(MethodName.EDIT_BLOG, "editBlog"),
         DELETE_BLOG(MethodName.DELETE_BLOG, "deleteBLog"),
         DELETE_FILE(MethodName.DELETE_FILE, "deleteFile"),
+        QUERY_MYSELF(MethodName.QUERY_MYSELF, "queryBlogMyself"),
         UNKNOW_METHOD("未知方法","unknowMethod");
 
         public String methodNameCN;

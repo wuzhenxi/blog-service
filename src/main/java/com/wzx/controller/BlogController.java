@@ -58,7 +58,7 @@ public class BlogController {
     @GetMapping("/blogs")
     @ApiOperation(MethodName.QUERY_BLOG)
     public Result queryBlog(@RequestParam(defaultValue = "1") Integer currentPage,
-            @RequestParam(defaultValue = "5") Integer pageSize, HttpServletRequest request) {
+            @RequestParam(defaultValue = "10") Integer pageSize, HttpServletRequest request) {
         String loginUserId = null;
         String token = request.getHeader("Authorization");
         if (!Strings.isNullOrEmpty(token)) {
@@ -71,6 +71,20 @@ public class BlogController {
         }
         Page page = new Page(currentPage, pageSize);
         IPage pageData = blogService.page(page, blogQueryWrapper.orderByDesc("created"));
+
+        return Result.succ(pageData);
+    }
+
+    @RequiresAuthentication
+    @GetMapping("/blogs/my")
+    @ApiOperation(MethodName.QUERY_MYSELF)
+    public Result queryBlogMyself(@RequestParam(defaultValue = "1") Integer currentPage,
+            @RequestParam(defaultValue = "10") Integer pageSize, HttpServletRequest request) {
+        Long userId = ShiroUtil.getProfile().getId();
+        Assert.notNull(userId, "当前未登录, 请先登录");
+        QueryWrapper<Blog> blogQueryWrapper = new QueryWrapper<Blog>().eq("user_id", userId);
+        Page page = new Page(currentPage, pageSize);
+        IPage pageData = blogService.page(page, blogQueryWrapper.orderByDesc("is_top","created"));
 
         return Result.succ(pageData);
     }

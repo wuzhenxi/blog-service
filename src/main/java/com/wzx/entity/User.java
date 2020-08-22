@@ -30,7 +30,7 @@ public class User implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    @NotBlank(message = "昵称不能为空")
+    @NotBlank(message = "用户名不能为空")
     private String username;
 
     private String avatar;
@@ -45,7 +45,6 @@ public class User implements Serializable {
 
     private Integer status = 1;
 
-    @NotNull
     private boolean logView;
 
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")

@@ -12,6 +12,8 @@ import com.wzx.util.JwtUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
@@ -47,7 +49,7 @@ public class AccountController {
         User user = userService.getOne(new QueryWrapper<User>().eq("username", loginDto.getUsername()));
         Assert.notNull(user, "用户不存在");
 
-        if(!user.getPassword().equals(SecureUtil.md5(loginDto.getPassword()))){
+        if (!user.getPassword().equals(SecureUtil.md5(loginDto.getPassword()))) {
             return Result.fail("密码不正确");
         }
         String jwt = jwtUtils.generateToken(user.getId());
@@ -62,6 +64,7 @@ public class AccountController {
                 .put("username", user.getUsername())
                 .put("avatar", user.getAvatar())
                 .put("email", user.getEmail())
+                .put("lastLogin", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(user.getLastLogin()))
                 .map()
         );
     }

@@ -10,6 +10,7 @@ import com.wzx.util.ShiroUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.time.LocalDateTime;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
@@ -37,10 +38,14 @@ public class UserController {
     @PostMapping("/update")
     @ApiOperation(MethodName.UPDATE_USER)
     public Result updateUser(@Validated @RequestBody User user) {
+        Long userId = ShiroUtil.getProfile().getId();
+        Assert.notNull(userId, "当前未登录, 请先登录");
+        Assert.isTrue(userId.equals(user.getId()), "当前登录用户与修改用户不一致");
         user.setPassword(SecureUtil.md5(user.getPassword()));
         user.setCreated(LocalDateTime.now());
-        userService.save(user);
-        return Result.succ(user);
+        userService.updateById(user);
+        SecurityUtils.getSubject().logout();
+        return Result.succ(true);
     }
 
     @RequiresAuthentication
