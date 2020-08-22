@@ -4,14 +4,13 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import java.io.Serializable;
+import java.time.LocalDateTime;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
-
-import javax.validation.constraints.NotBlank;
-import java.io.Serializable;
-import java.time.LocalDateTime;
 
 /**
  * @version 1.0
@@ -45,6 +44,11 @@ public class Blog implements Serializable {
 
     @NotNull(message = "状态不能为空")
     private Integer status;
+
+    private Integer isTop = 0;
+
+    // 附件标识文件位置
+    private String attachment;
 
 
 }

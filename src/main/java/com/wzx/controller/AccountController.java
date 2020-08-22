@@ -3,7 +3,7 @@ package com.wzx.controller;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.crypto.SecureUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.wzx.common.dto.LoginDTO;
+import com.wzx.dto.LoginDTO;
 import com.wzx.common.lang.Result;
 import com.wzx.constants.MethodName;
 import com.wzx.entity.User;

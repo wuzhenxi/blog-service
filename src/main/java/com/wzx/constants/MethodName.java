@@ -18,4 +18,5 @@ public class MethodName {
     public static final String UPLOAD_FILE = "上传文件";
     public static final String EDIT_BLOG = "编辑博客";
     public static final String DELETE_BLOG = "删除博客";
+    public static final String DELETE_FILE = "删除文件";
 }

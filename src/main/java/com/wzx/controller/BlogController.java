@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.common.base.Strings;
 import com.wzx.common.lang.Result;
 import com.wzx.constants.MethodName;
+import com.wzx.dto.UserFileDTO;
 import com.wzx.entity.Blog;
 import com.wzx.service.BlogService;
 import com.wzx.service.StorageService;
@@ -21,9 +22,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
 import java.util.Optional;
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
+import org.crazycake.shiro.RedisCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 import org.springframework.validation.annotation.Validated;
@@ -77,11 +80,11 @@ public class BlogController {
     public Result detailBlog(@PathVariable(name = "id") Long id, HttpServletRequest request) {
         String loginUserId = null;
         String token = request.getHeader("Authorization");
-        if(!Strings.isNullOrEmpty(token)) {
+        if (!Strings.isNullOrEmpty(token)) {
             loginUserId = jwtUtils.getClaimByToken(token).getSubject();
         }
         QueryWrapper<Blog> blogQueryWrapper = new QueryWrapper<Blog>().eq("id", id).eq(STATUS, 0);
-        if(Objects.nonNull(loginUserId)) {
+        if (Objects.nonNull(loginUserId)) {
             blogQueryWrapper.or().eq("id", id).eq("user_id", loginUserId);
         }
         Blog blog = blogService.getOne(blogQueryWrapper);
@@ -93,7 +96,8 @@ public class BlogController {
     @RequiresAuthentication
     @PostMapping("/blog/upload")
     @ApiOperation(MethodName.UPLOAD_FILE)
-    public Result uploadFile(@RequestParam("file") MultipartFile multipartFile, HttpServletRequest request) throws IOException {
+    public Result uploadFile(@RequestParam("file") MultipartFile multipartFile, HttpServletRequest request)
+            throws IOException {
         JSONObject result = new JSONObject();
         if (multipartFile.isEmpty()) {
             Assert.notNull(multipartFile, "空文件");
@@ -113,7 +117,7 @@ public class BlogController {
     @ApiOperation(MethodName.EDIT_BLOG)
     public Result editBlog(@Validated @RequestBody Blog blog) {
         Blog temp = null;
-        if(Objects.nonNull(blog.getId())) {
+        if (Objects.nonNull(blog.getId())) {
             // 修改
             temp = blogService.getById(blog.getId());
             // 只能编辑自己的文章
@@ -123,6 +127,7 @@ public class BlogController {
             temp = new Blog();
             // 设置是否仅自己可见
             temp.setStatus(blog.getStatus());
+            temp.setIsTop(blog.getIsTop());
             temp.setUserId(ShiroUtil.getProfile().getId());
             temp.setCreated(LocalDateTime.now());
         }
@@ -148,6 +153,15 @@ public class BlogController {
             log.info("blog contents:{}", content);
             flag = blogService.removeById(blogId);
         }
+        return Result.succ(flag);
+    }
+
+    @RequiresAuthentication
+    @PostMapping("/file/delete/")
+    @ApiOperation(MethodName.DELETE_FILE)
+    public Result deleteFile(@Validated @RequestBody UserFileDTO userFileDTO) {
+        Assert.isTrue(userFileDTO.getUserId().equals(ShiroUtil.getProfile().getId()), "该博文不属于您，无权删除博文相关内容");
+        boolean flag = storageService.deleteFile(userFileDTO.getFileUrl());
         return Result.succ(flag);
     }
 

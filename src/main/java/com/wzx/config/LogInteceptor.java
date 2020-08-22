@@ -1,5 +1,7 @@
 package com.wzx.config;
 
+import static com.wzx.constants.ConstantsUtils.IP_QUERY_PREFIX;
+
 import com.google.common.base.Strings;
 import com.wzx.constants.EnumValues;
 import com.wzx.constants.EnumValues.EnumMethodName;
@@ -14,6 +16,7 @@ import java.net.UnknownHostException;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Optional;
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
@@ -23,8 +26,10 @@ import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
+import org.crazycake.shiro.RedisCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.RedisTemplate;
 
 /**
  * 切面拦截controller.
@@ -53,6 +58,9 @@ public class LogInteceptor {
     @Autowired
     private HttpServletRequest request;
 
+    @Resource(name = "redisTemplateUtils")
+    private RedisTemplate<String, IPDataDTO> redisTemplate;
+
     private ThreadLocal<Long> time = new ThreadLocal<>();
 
     @Before("execution(* com.wzx.controller..*.*(..))")
@@ -69,7 +77,11 @@ public class LogInteceptor {
         logInfo.setOperationTime(LocalDateTime.now());
         User loginUser = new User();
         String requestIp = requestUtils.getRequestIp(request);
-        IPDataDTO ipDataDTO = requestUtils.queryLocationByIpForm(requestIp);
+
+        IPDataDTO ipDataDTO = redisTemplate.opsForValue().get(IP_QUERY_PREFIX + requestIp);
+        if(Objects.isNull(ipDataDTO)) {
+            ipDataDTO = requestUtils.queryLocationByIpForm(requestIp);
+        }
         handlerIPDataInfo(ipDataDTO, logInfo);
         String token = request.getHeader("Authorization");
         if(!Strings.isNullOrEmpty(token)) {
@@ -92,6 +104,12 @@ public class LogInteceptor {
             logInfo.setCity(Optional.ofNullable(ipDataDTO.getData().getCity()).orElse("未知"));
             logInfo.setCityId(Optional.ofNullable(ipDataDTO.getData().getCity_id()).orElse("未知"));
             logInfo.setIsp(Optional.ofNullable(ipDataDTO.getData().getIsp()).orElse("未知"));
+        } else {
+            logInfo.setCountry("未知");
+            logInfo.setRegion("未知");
+            logInfo.setCity("未知");
+            logInfo.setCityId("未知");
+            logInfo.setIsp("未知");
         }
     }
 

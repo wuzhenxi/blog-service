@@ -1,14 +1,20 @@
 package com.wzx.util;
 
+import static com.wzx.constants.ConstantsUtils.IP_QUERY_PREFIX;
+
 import com.wzx.dto.IPDataDTO;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.crazycake.shiro.RedisCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -38,6 +44,9 @@ public class RequestUtils {
 
     @Autowired
     private RestTemplate restTemplate;
+
+    @Resource(name = "redisTemplateUtils")
+    private RedisTemplate<String, IPDataDTO> redisTemplate;
 
     public String getRequestIpOnly(HttpServletRequest request) {
         String ip = request.getHeader("X-Forwarded-For");
@@ -120,6 +129,10 @@ public class RequestUtils {
             }
         } catch (RestClientException e) {
             log.error("根据ip获取详细信息报错.Err:{},Exception:{}", e.getMessage(), e);
+        }
+        if(Objects.nonNull(ipDataDTO.getData())) {
+            // 设置为永久保存
+            redisTemplate.opsForValue().setIfAbsent(IP_QUERY_PREFIX + ip, ipDataDTO);
         }
         return ipDataDTO;
     }

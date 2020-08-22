@@ -1,5 +1,6 @@
 package com.wzx.dto;
 
+import java.io.Serializable;
 import lombok.Data;
 
 /**
@@ -10,7 +11,9 @@ import lombok.Data;
  * @since <pre>2020/8/19</pre>
  */
 @Data
-public class IPDataDTO {
+public class IPDataDTO implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private DataInfo data;
 

@@ -1,4 +1,4 @@
-package com.wzx.common.dto;
+package com.wzx.dto;
 
 import lombok.Data;
 
@@ -12,6 +12,8 @@ import java.io.Serializable;
  */
 @Data
 public class LoginDTO implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @NotBlank(message = "昵称不能为空")
     private String username;

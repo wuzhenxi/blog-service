@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.common.base.Strings;
-import com.wzx.common.dto.LogDTO;
+import com.wzx.dto.LogDTO;
 import com.wzx.common.lang.Result;
 import com.wzx.entity.LogInfo;
 import com.wzx.service.LogInfoService;

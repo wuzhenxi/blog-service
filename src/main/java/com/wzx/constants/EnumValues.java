@@ -1,7 +1,6 @@
 package com.wzx.constants;
 
 import java.util.Arrays;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * 常量枚举值.
@@ -23,6 +22,7 @@ public interface EnumValues {
         UPLOAD_IMAGE(MethodName.UPLOAD_FILE, "uploadFile"),
         EDIT_BLOG(MethodName.EDIT_BLOG, "editBlog"),
         DELETE_BLOG(MethodName.DELETE_BLOG, "deleteBLog"),
+        DELETE_FILE(MethodName.DELETE_FILE, "deleteFile"),
         UNKNOW_METHOD("未知方法","unknowMethod");
 
         public String methodNameCN;
@@ -61,5 +61,35 @@ public interface EnumValues {
             return enumMethodName.getMethodNameEN();
         }
 
+    }
+
+    enum EnumFileTypeToPath {
+        FILE_IMAGE(ConstantsUtils.FILE_IMAGE_TYPE, ConstantsUtils.FILE_IMAGE_URL),
+        FILE_VIDEO(ConstantsUtils.FILE_VIDEO_TYPE, ConstantsUtils.FILE_VIDEO_URL),
+        FILE_OTHER(ConstantsUtils.FILE_OTHER_TYPE, ConstantsUtils.FILE_OTHER_URL);
+
+        private String fileType;
+        private String filePath;
+
+        public String getFileType() {
+            return fileType;
+        }
+
+        public void setFileType(String fileType) {
+            this.fileType = fileType;
+        }
+
+        public String getFilePath() {
+            return filePath;
+        }
+
+        public void setFilePath(String filePath) {
+            this.filePath = filePath;
+        }
+
+        EnumFileTypeToPath(String fileType, String filePath) {
+            this.fileType = fileType;
+            this.filePath = filePath;
+        }
     }
 }
