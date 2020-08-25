@@ -42,12 +42,15 @@ public class Blog implements Serializable {
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime created;
 
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime modify;
+
     @NotNull(message = "状态不能为空")
     private Integer status;
 
     private Integer isTop = 0;
 
-    // 附件标识文件位置
+    // 附件标识文件位置 后续可单独建张放附件的表
     private String attachment;
 
 

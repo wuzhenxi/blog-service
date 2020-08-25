@@ -45,7 +45,7 @@ public class User implements Serializable {
 
     private Integer status = 1;
 
-    private boolean logView;
+    private Boolean logView;
 
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime created;

@@ -64,6 +64,7 @@ public class AccountController {
                 .put("username", user.getUsername())
                 .put("avatar", user.getAvatar())
                 .put("email", user.getEmail())
+                .put("logView", user.getLogView())
                 .put("lastLogin", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(user.getLastLogin()))
                 .map()
         );
