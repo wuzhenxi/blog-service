@@ -145,6 +145,8 @@ public class BlogController {
             temp.setUserId(ShiroUtil.getProfile().getId());
             temp.setCreated(LocalDateTime.now());
         }
+        // 修改时间
+        temp.setModify(LocalDateTime.now());
 
         BeanUtil.copyProperties(blog, temp, "id", "userId", "created");
         blogService.saveOrUpdate(temp);
