@@ -9,15 +9,16 @@ import com.wzx.constants.MethodName;
 import com.wzx.entity.User;
 import com.wzx.service.UserService;
 import com.wzx.util.JwtUtils;
+import com.wzx.util.RSAUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
 import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.Assert;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,6 +38,9 @@ import javax.servlet.http.HttpServletResponse;
 @RestController
 public class AccountController {
 
+    @Value("${rsa.private-key}")
+    private String rsaPrivateKey;
+
     @Resource
     private UserService userService;
 
@@ -45,11 +49,15 @@ public class AccountController {
 
     @PostMapping("/login")
     @ApiOperation(MethodName.USER_LOGIN)
-    public Result login(@Validated @RequestBody LoginDTO loginDto, HttpServletResponse response) {
+    public Result login(@Validated @RequestBody LoginDTO loginDto, HttpServletResponse response) throws Exception {
         User user = userService.getOne(new QueryWrapper<User>().eq("username", loginDto.getUsername()));
         Assert.notNull(user, "用户不存在");
 
-        if (!user.getPassword().equals(SecureUtil.md5(loginDto.getPassword()))) {
+//        if (!user.getPassword().equals(SecureUtil.md5(loginDto.getPassword()))) {
+//            return Result.fail("密码不正确");
+//        }
+        if (!RSAUtils.decrypt(user.getPassword(), rsaPrivateKey)
+                .equals(RSAUtils.decrypt(loginDto.getPassword(), rsaPrivateKey))) {
             return Result.fail("密码不正确");
         }
         String jwt = jwtUtils.generateToken(user.getId());

@@ -25,6 +25,17 @@ public class RSAUtils {
     private static final String SIGN_ALGORITHMS_MD5 = "MD5withRSA";
     private static final String SIGN_ALGORITHMS_SHA1 = "SHA1WithRSA";
 
+    /*public static void main(String[] args) throws Exception {
+        KeyPair keyPair = getKeyPair();
+        PublicKey aPublic = keyPair.getPublic();
+        String content = new String(Base64.encodeBase64(aPublic.getEncoded()));
+        System.out.println("共钥内容:" + content);
+
+        PrivateKey aPrivate = keyPair.getPrivate();
+        String content1 = new String(Base64.encodeBase64(aPrivate.getEncoded()));
+        System.out.println("私钥内容:" + content1);
+    }*/
+
     /**
      * 生成密钥对
      * @return
