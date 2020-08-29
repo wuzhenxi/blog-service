@@ -3,9 +3,9 @@ package com.wzx.controller;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.crypto.SecureUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.wzx.dto.LoginDTO;
 import com.wzx.common.lang.Result;
 import com.wzx.constants.MethodName;
+import com.wzx.dto.LoginDTO;
 import com.wzx.entity.User;
 import com.wzx.service.UserService;
 import com.wzx.util.JwtUtils;
@@ -15,6 +15,7 @@ import io.swagger.annotations.ApiOperation;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
@@ -25,8 +26,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * @version 1.0

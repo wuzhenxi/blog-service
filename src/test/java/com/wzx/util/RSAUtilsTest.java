@@ -1,7 +1,5 @@
 package com.wzx.util;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import org.junit.jupiter.api.Test;
 
 /**
@@ -23,14 +21,14 @@ class RSAUtilsTest {
 
     @Test
     void encrypt() throws Exception {
-        String str = "huawei123@";
+        String str = "huawei123";
         String encrypt = RSAUtils.encrypt(str, rsaPublicKey);
         System.out.println(str + "-->加密后:" + encrypt);
     }
 
     @Test
     void decrypt() throws Exception {
-        String str = "ekjmZhh1zbqxeMuztGa807XLPwUE0il61nD7pYV7mGY3xtYj6inr7BauLmvEAYqoB+FyKnjWtwptJ/Zjl6rVKqOMitX79qPX6o9IW1G04R6qDuHOqJ0Dqc2+zr4jVT13vsvrBJYMRFl5U85Q0GmmXw2pvT13LIACoVNfVcrDIpo=";
+        String str = "eeILQTrwMGMdSPMk5z0iNxJyKya6OaHbEN0BhIErEAv8TYEV6utksVhXRRB7Vh8cAqGNRF5JMyxheyO/LlEQ/in9PxxSF89+GM0DInYXqb7OWKV2NNqNCHAwxKFctCBd9jmmy806iLn4SGvGMk1nKeFxS6k8ffj1q4uabJ1aTqo=";
         String encrypt = RSAUtils.decrypt(str, rsaPrivateKey);
         System.out.println(str + "-->解密后:" + encrypt);
     }
