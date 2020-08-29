@@ -41,7 +41,7 @@ public class UserController {
         Long userId = ShiroUtil.getProfile().getId();
         Assert.notNull(userId, "当前未登录, 请先登录");
         Assert.isTrue(userId.equals(user.getId()), "当前登录用户与修改用户不一致");
-        user.setPassword(SecureUtil.md5(user.getPassword()));
+        user.setPassword(user.getPassword());
         user.setCreated(LocalDateTime.now());
         userService.updateById(user);
         SecurityUtils.getSubject().logout();

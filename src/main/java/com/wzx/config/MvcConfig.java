@@ -3,7 +3,10 @@ package com.wzx.config;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 
@@ -35,5 +38,10 @@ public class MvcConfig extends WebMvcConfigurationSupport {
                 "file:///" + other.replace("\\", "/"));
         registry.addResourceHandler("doc.html").addResourceLocations("classpath:META-INF/resources/");
         registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:META-INF/resources/webjars/");
+    }
+
+    @Bean
+    public RestTemplate restTemplate(RestTemplateBuilder builder) {
+        return builder.build();
     }
 }

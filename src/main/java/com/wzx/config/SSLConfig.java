@@ -5,11 +5,10 @@ import org.apache.catalina.connector.Connector;
 import org.apache.tomcat.util.descriptor.web.SecurityCollection;
 import org.apache.tomcat.util.descriptor.web.SecurityConstraint;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.context.annotation.Profile;
 
 /**
  * File Description.
@@ -19,6 +18,7 @@ import org.springframework.web.client.RestTemplate;
  * @since <pre>2020/8/15</pre>
  */
 @Configuration
+@Profile(value = "pro")
 public class SSLConfig {
 
     @Value("${server.port}")
@@ -56,8 +56,4 @@ public class SSLConfig {
         return connector;
     }
 
-    @Bean
-    public RestTemplate restTemplate(RestTemplateBuilder builder) {
-        return builder.build();
-    }
 }
