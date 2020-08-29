@@ -51,4 +51,11 @@ public class GlobalExceptionHandler {
         return Result.fail(e.getMessage());
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(value = Exception.class)
+    public Result handler(Exception e) {
+        log.error("程序异常：----------------{}", e.getMessage());
+        return Result.fail(e.getMessage());
+    }
+
 }

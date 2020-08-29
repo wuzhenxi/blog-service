@@ -48,16 +48,19 @@ public class AccountController {
 
     @PostMapping("/login")
     @ApiOperation(MethodName.USER_LOGIN)
-    public Result login(@Validated @RequestBody LoginDTO loginDto, HttpServletResponse response) throws Exception {
+    public Result login(@Validated @RequestBody LoginDTO loginDto, HttpServletResponse response) {
         User user = userService.getOne(new QueryWrapper<User>().eq("username", loginDto.getUsername()));
         Assert.notNull(user, "用户不存在");
 
 //        if (!user.getPassword().equals(SecureUtil.md5(loginDto.getPassword()))) {
 //            return Result.fail("密码不正确");
 //        }
-        if (!RSAUtils.decrypt(user.getPassword(), rsaPrivateKey)
-                .equals(RSAUtils.decrypt(loginDto.getPassword(), rsaPrivateKey))) {
-            return Result.fail("密码不正确");
+        try {
+            String dbPwd = RSAUtils.decrypt(user.getPassword(), rsaPrivateKey);
+            String paramsPwd = RSAUtils.decrypt(loginDto.getPassword(), rsaPrivateKey);
+            Assert.isTrue(dbPwd.equals(paramsPwd), "密码不正确");
+        } catch (Exception e) {
+            return Result.fail("密码解密失败");
         }
         String jwt = jwtUtils.generateToken(user.getId());
         user.setLastLogin(LocalDateTime.now());
