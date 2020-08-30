@@ -34,10 +34,10 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("Jesswu-blog")
+                .title("Jessewu-blog")
                 .description("JesseWu's blog for java")
                 .termsOfServiceUrl("https://www.wuzhenxicloud.com:8081/doc.html")
-                .contact(new Contact("Jesswu", "https://www.wuzhenxicloud.com", "wyyxwzx@163.com"))
+                .contact(new Contact("Jessewu", "https://www.wuzhenxicloud.com", "wyyxwzx@163.com"))
                 .version("1.0")
                 .build();
     }
