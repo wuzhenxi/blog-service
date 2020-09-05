@@ -43,7 +43,7 @@ public class LogInfoController {
     public Result queryLog(@Validated @RequestBody LogDTO logDTO) {
         Page page = new Page(logDTO.getCurrentPage(), logDTO.getPageSize());
         QueryWrapper<LogInfo> queryWrapper = handlerQueryParam(logDTO);
-        IPage pageData = logInfoService.page(page, queryWrapper.orderByDesc("operationTime"));
+        IPage pageData = logInfoService.page(page, queryWrapper.orderByDesc("operation_time"));
         return Result.succ(pageData);
     }
 
