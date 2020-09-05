@@ -3,7 +3,6 @@ package com.wzx.config;
 import static com.wzx.constants.ConstantsUtils.IP_QUERY_PREFIX;
 
 import com.google.common.base.Strings;
-import com.wzx.constants.EnumValues;
 import com.wzx.constants.EnumValues.EnumMethodName;
 import com.wzx.dto.IPDataDTO;
 import com.wzx.entity.LogInfo;
@@ -20,15 +19,12 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.AfterReturning;
-import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
-import org.crazycake.shiro.RedisCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.redis.core.RedisTemplate;
 
 /**
@@ -40,6 +36,7 @@ import org.springframework.data.redis.core.RedisTemplate;
  */
 @Aspect
 @Configuration
+@Profile("pro")
 @Slf4j
 public class LogInteceptor {
 
