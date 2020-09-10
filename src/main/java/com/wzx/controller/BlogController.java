@@ -21,10 +21,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.Objects;
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.shiro.authz.annotation.RequiresGuest;
 import org.springframework.util.Assert;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,15 +47,16 @@ import org.springframework.web.multipart.MultipartFile;
 public class BlogController {
 
     private static final String STATUS = "status";
-    @Autowired
+    @Resource
     private BlogService blogService;
 
-    @Autowired
+    @Resource
     private JwtUtils jwtUtils;
 
-    @Autowired
+    @Resource
     private StorageService storageService;
 
+    @RequiresGuest
     @GetMapping("/blogs")
     @ApiOperation(MethodName.QUERY_BLOG)
     public Result queryBlog(@RequestParam(defaultValue = "1") Integer currentPage,
@@ -89,6 +91,7 @@ public class BlogController {
         return Result.succ(pageData);
     }
 
+    @RequiresGuest
     @GetMapping("/blog/{id}")
     @ApiOperation(MethodName.DETAILS_BLOG)
     public Result detailBlog(@PathVariable(name = "id") Long id, HttpServletRequest request) {
