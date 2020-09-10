@@ -9,9 +9,9 @@ package com.wzx.constants;
  */
 public class ConstantsUtils {
     public static final String IP_QUERY_PREFIX = "query:ip:";
-    public static final String FILE_IMAGE_URL = "images/";
-    public static final String FILE_VIDEO_URL = "videos/";
-    public static final String FILE_OTHER_URL = "other/";
+    public static final String FILE_IMAGE_URL = "/images/";
+    public static final String FILE_VIDEO_URL = "/videos/";
+    public static final String FILE_OTHER_URL = "/other/";
     public static final String FILE_IMAGE_TYPE = "image";
     public static final String FILE_VIDEO_TYPE = "video";
     public static final String FILE_OTHER_TYPE = "other";

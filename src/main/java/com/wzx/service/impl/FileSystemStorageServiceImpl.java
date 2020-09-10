@@ -17,6 +17,7 @@ import java.util.stream.Stream;
 import javax.servlet.http.HttpServletRequest;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +32,9 @@ import org.springframework.stereotype.Service;
 @ConfigurationProperties(prefix = "file.location.path")
 public class FileSystemStorageServiceImpl implements StorageService {
 
+    @Value("${server.port}")
+    private String serverPort;
+
     private String images;
 
     private String videos;
@@ -42,8 +46,11 @@ public class FileSystemStorageServiceImpl implements StorageService {
             throws IOException {
         String requestURL = request.getRequestURL().toString();
         String requestURI = request.getRequestURI();
-        String url = requestURL.substring(0, requestURL.length() - requestURI.length() + 1);
-
+        String url = requestURL.substring(0, requestURL.length() - requestURI.length());
+        // 带上端口返回避免多台实例，文件404
+        if (!url.contains(serverPort)) {
+            url += ":" + serverPort;
+        }
         List<String> strings = Arrays.asList(filename.split("\\."));
         StringBuilder sb = new StringBuilder();
         String path = getCurrentSaveDate(contentType);
@@ -84,7 +91,7 @@ public class FileSystemStorageServiceImpl implements StorageService {
                 fileAbsolutePath = other + Arrays.asList(fileUrl.split(filePath)).get(1);
             }
             File file = new File(fileAbsolutePath);
-            if(file.exists()) {
+            if (file.exists()) {
                 try {
                     Files.delete(new File(fileAbsolutePath).toPath());
                     deleteFlag = true;

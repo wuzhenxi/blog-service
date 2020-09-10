@@ -1,5 +1,6 @@
 package com.wzx.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -21,6 +22,10 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
+
+    @Value(value = "${swagger.base.path:}")
+    private String basePath;
+
     @Bean
     public Docket createRestApi() {
         return new Docket(DocumentationType.SWAGGER_2)
@@ -29,7 +34,7 @@ public class SwaggerConfig {
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.wzx"))
                 .paths(PathSelectors.any())
-                .build();
+                .build().pathMapping(basePath);
     }
 
     private ApiInfo apiInfo() {
