@@ -36,7 +36,7 @@ public class MvcConfig extends WebMvcConfigurationSupport {
                 "file:///" + videos.replace("\\", "/"));
         registry.addResourceHandler("/other/**").addResourceLocations(
                 "file:///" + other.replace("\\", "/"));
-        registry.addResourceHandler("/favicon.ico").addResourceLocations("classpath:static/");
+        registry.addResourceHandler("favicon.ico").addResourceLocations("classpath:static/");
         registry.addResourceHandler("doc.html").addResourceLocations("classpath:META-INF/resources/");
         registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:META-INF/resources/webjars/");
     }
