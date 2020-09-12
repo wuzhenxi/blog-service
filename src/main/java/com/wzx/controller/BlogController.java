@@ -56,7 +56,6 @@ public class BlogController {
     @Resource
     private StorageService storageService;
 
-    @RequiresGuest
     @GetMapping("/blogs")
     @ApiOperation(MethodName.QUERY_BLOG)
     public Result queryBlog(@RequestParam(defaultValue = "1") Integer currentPage,
@@ -91,7 +90,6 @@ public class BlogController {
         return Result.succ(pageData);
     }
 
-    @RequiresGuest
     @GetMapping("/blog/{id}")
     @ApiOperation(MethodName.DETAILS_BLOG)
     public Result detailBlog(@PathVariable(name = "id") Long id, HttpServletRequest request) {
