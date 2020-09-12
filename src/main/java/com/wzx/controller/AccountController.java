@@ -16,12 +16,12 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.Assert;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -48,7 +48,7 @@ public class AccountController {
 
     @PostMapping("/login")
     @ApiOperation(MethodName.USER_LOGIN)
-    public Result login(@Validated @RequestBody LoginDTO loginDto, HttpServletResponse response) {
+    public Result login(@Valid @RequestBody LoginDTO loginDto, HttpServletResponse response) {
         User user = userService.getOne(new QueryWrapper<User>().eq("username", loginDto.getUsername()));
         Assert.notNull(user, "用户不存在");
 
@@ -84,7 +84,7 @@ public class AccountController {
     @RequiresAuthentication
     @PostMapping("/signup")
     @ApiOperation(MethodName.USER_SIGNUP)
-    public Result signup(@Validated @RequestBody User user) {
+    public Result signup(@Valid @RequestBody User user) {
         user.setPassword(SecureUtil.md5(user.getPassword()));
         user.setCreated(LocalDateTime.now());
         user.setStatus(1);

@@ -39,8 +39,8 @@ public class User implements Serializable {
     @Email(message = "邮箱格式不正确")
     private String email;
 
-    @NotBlank(message = "密码至少包含 数字和英文，长度6-20")
-    @Pattern(regexp = "^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$")
+    @NotBlank(message = "密码长度6-20")
+    @Pattern(regexp = "^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$", message = "密码至少包含 数字和英文，长度6-20")
     private String password;
 
     private Integer status = 1;

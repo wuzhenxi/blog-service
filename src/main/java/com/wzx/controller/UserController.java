@@ -1,7 +1,6 @@
 package com.wzx.controller;
 
 
-import cn.hutool.crypto.SecureUtil;
 import com.wzx.common.lang.Result;
 import com.wzx.constants.MethodName;
 import com.wzx.entity.User;
@@ -10,11 +9,12 @@ import com.wzx.util.ShiroUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.time.LocalDateTime;
+import javax.validation.Valid;
+import javax.validation.constraints.PositiveOrZero;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,7 +37,7 @@ public class UserController {
     @RequiresAuthentication
     @PostMapping("/update")
     @ApiOperation(MethodName.UPDATE_USER)
-    public Result updateUser(@Validated @RequestBody User user) {
+    public Result updateUser(@Valid @RequestBody User user) {
         Long userId = ShiroUtil.getProfile().getId();
         Assert.notNull(userId, "当前未登录, 请先登录");
         Assert.isTrue(userId.equals(user.getId()), "当前登录用户与修改用户不一致");
@@ -51,7 +51,7 @@ public class UserController {
     @RequiresAuthentication
     @PostMapping("/delete/{id}")
     @ApiOperation(MethodName.DELETE_USER)
-    public Result deleteUser(@PathVariable(name = "id") Long id) {
+    public Result deleteUser(@PathVariable(name = "id") @PositiveOrZero Long id) {
         Assert.notNull(id, "用户有误");
         Assert.isTrue(ShiroUtil.getProfile().getId().equals(id),"无权删除其他用户");
         User user = userService.getById(id);

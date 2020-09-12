@@ -23,11 +23,11 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import javax.validation.constraints.PositiveOrZero;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
-import org.apache.shiro.authz.annotation.RequiresGuest;
 import org.springframework.util.Assert;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -94,7 +94,7 @@ public class BlogController {
 
     @GetMapping("/blog/{id}")
     @ApiOperation(MethodName.DETAILS_BLOG)
-    public Result detailBlog(@PathVariable(name = "id") Long id, HttpServletRequest request) {
+    public Result detailBlog(@PathVariable(name = "id") @PositiveOrZero Long id, HttpServletRequest request) {
         String loginUserId = null;
         String token = request.getHeader("Authorization");
         if (!Strings.isNullOrEmpty(token)) {
@@ -132,7 +132,7 @@ public class BlogController {
     @RequiresAuthentication
     @PostMapping("/blog/edit")
     @ApiOperation(MethodName.EDIT_BLOG)
-    public Result editBlog(@Validated @RequestBody Blog blog) {
+    public Result editBlog(@Valid @RequestBody Blog blog) {
         Blog temp = null;
         if (Objects.nonNull(blog.getId())) {
             // 修改
@@ -160,7 +160,7 @@ public class BlogController {
     @RequiresAuthentication
     @GetMapping("/blog/delete/{blogId}")
     @ApiOperation(MethodName.DELETE_BLOG)
-    public Result deleteBLog(@Validated @PathVariable(name = "blogId") Long blogId) {
+    public Result deleteBLog(@PathVariable(name = "blogId") @PositiveOrZero Long blogId) {
         boolean flag = false;
         if (Objects.nonNull(blogId)) {
             Blog temp = blogService.getById(blogId);
@@ -178,7 +178,7 @@ public class BlogController {
     @RequiresAuthentication
     @PostMapping("/file/delete/")
     @ApiOperation(MethodName.DELETE_FILE)
-    public Result deleteFile(@Validated @RequestBody UserFileDTO userFileDTO) {
+    public Result deleteFile(@Valid @RequestBody UserFileDTO userFileDTO) {
         Assert.isTrue(userFileDTO.getUserId().equals(ShiroUtil.getProfile().getId()), "该博文不属于您，无权删除博文相关内容");
         boolean flag = storageService.deleteFile(userFileDTO.getFileUrl());
         return Result.succ(flag);
