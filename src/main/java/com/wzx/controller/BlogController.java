@@ -47,6 +47,8 @@ import org.springframework.web.multipart.MultipartFile;
 public class BlogController {
 
     private static final String STATUS = "status";
+    private static final String USER_ID = "user_id";
+    private static final String CREATED = "created";
     @Resource
     private BlogService blogService;
 
@@ -68,10 +70,10 @@ public class BlogController {
         // 未登录，仅可看公开博客
         QueryWrapper<Blog> blogQueryWrapper = new QueryWrapper<Blog>().eq(STATUS, 0);
         if (Objects.nonNull(loginUserId)) {
-            blogQueryWrapper.or().eq("user_id", loginUserId);
+            blogQueryWrapper.or().eq(USER_ID, loginUserId);
         }
         Page page = new Page(currentPage, pageSize);
-        IPage pageData = blogService.page(page, blogQueryWrapper.orderByDesc("created"));
+        IPage pageData = blogService.page(page, blogQueryWrapper.orderByDesc(CREATED));
 
         return Result.succ(pageData);
     }
@@ -83,9 +85,9 @@ public class BlogController {
             @RequestParam(defaultValue = "10") Integer pageSize, HttpServletRequest request) {
         Long userId = ShiroUtil.getProfile().getId();
         Assert.notNull(userId, "当前未登录, 请先登录");
-        QueryWrapper<Blog> blogQueryWrapper = new QueryWrapper<Blog>().eq("user_id", userId);
+        QueryWrapper<Blog> blogQueryWrapper = new QueryWrapper<Blog>().eq(USER_ID, userId);
         Page page = new Page(currentPage, pageSize);
-        IPage pageData = blogService.page(page, blogQueryWrapper.orderByDesc("is_top","created"));
+        IPage pageData = blogService.page(page, blogQueryWrapper.orderByDesc("is_top", CREATED));
 
         return Result.succ(pageData);
     }
@@ -100,7 +102,7 @@ public class BlogController {
         }
         QueryWrapper<Blog> blogQueryWrapper = new QueryWrapper<Blog>().eq("id", id).eq(STATUS, 0);
         if (Objects.nonNull(loginUserId)) {
-            blogQueryWrapper.or().eq("id", id).eq("user_id", loginUserId);
+            blogQueryWrapper.or().eq("id", id).eq(USER_ID, loginUserId);
         }
         Blog blog = blogService.getOne(blogQueryWrapper);
         Assert.notNull(blog, "该博客已被删除或仅作者可见");
@@ -149,7 +151,7 @@ public class BlogController {
         // 修改时间
         temp.setModify(LocalDateTime.now());
 
-        BeanUtil.copyProperties(blog, temp, "id", "userId", "created");
+        BeanUtil.copyProperties(blog, temp, "id", "userId", CREATED);
         blogService.saveOrUpdate(temp);
 
         return Result.succ(true);
