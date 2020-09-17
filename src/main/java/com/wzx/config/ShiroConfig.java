@@ -1,7 +1,7 @@
 package com.wzx.config;
 
 import com.wzx.shiro.AccountRealm;
-import com.wzx.shiro.JwtFilter;
+import com.wzx.config.filter.JwtFilter;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;

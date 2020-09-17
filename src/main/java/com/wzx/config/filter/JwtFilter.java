@@ -1,7 +1,8 @@
-package com.wzx.shiro;
+package com.wzx.config.filter;
 
 import cn.hutool.json.JSONUtil;
 import com.wzx.common.lang.Result;
+import com.wzx.shiro.JwtToken;
 import com.wzx.util.JwtUtils;
 import io.jsonwebtoken.Claims;
 import java.io.IOException;
