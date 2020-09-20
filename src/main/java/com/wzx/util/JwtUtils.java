@@ -3,6 +3,10 @@ package com.wzx.util;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import java.util.Arrays;
+import java.util.Base64;
+import java.util.List;
+import javax.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -64,4 +68,10 @@ public class JwtUtils {
     public boolean isTokenExpired(Date expiration) {
         return expiration.before(new Date());
     }
+
+    public List<String> parseToken(@NotBlank String tokenStr) {
+        String plainTextToken = new String(Base64.getDecoder().decode(Arrays.asList(tokenStr.split("\\b")).get(2)));
+        return Arrays.asList(plainTextToken.split(":"));
+    }
+
 }

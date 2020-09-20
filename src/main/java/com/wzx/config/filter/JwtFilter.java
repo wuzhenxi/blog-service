@@ -55,7 +55,7 @@ public class JwtFilter extends AuthenticatingFilter {
             // 校验jwt
             Claims claim = jwtUtils.getClaimByToken(jwt);
             if (claim == null || jwtUtils.isTokenExpired(claim.getExpiration())) {
-                log.warn("token:{}无效，请重新登录", jwt);
+                log.warn("token:{}无效", jwt);
             }
             // 执行登录
             return executeLogin(servletRequest, servletResponse);
