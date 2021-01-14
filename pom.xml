@@ -2,12 +2,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.3.4.RELEASE</version>
-    <relativePath/> <!-- lookup parent from repository -->
-  </parent>
   <groupId>com.wzx</groupId>
   <artifactId>blog</artifactId>
   <version>0.0.1-SNAPSHOT</version>
@@ -17,24 +11,26 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <spring-cloud.version>Finchley.SR1</spring-cloud.version>
+    <spring-boot.version>2.3.4.RELEASE</spring-boot.version>
+    <alibaba-cloud.version>2.2.3.RELEASE</alibaba-cloud.version>
     <java.version>1.8</java.version>
   </properties>
 
   <dependencyManagement>
     <dependencies>
+      <!-- spring boot dependencies -->
       <dependency>
-        <groupId>org.springframework.cloud</groupId>
-        <artifactId>spring-cloud-dependencies</artifactId>
-        <version>${spring-cloud.version}</version>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-dependencies</artifactId>
+        <version>${spring-boot.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
-
+      <!-- spring cloud alibaba dependencies -->
       <dependency>
-        <groupId>org.springframework.cloud</groupId>
+        <groupId>com.alibaba.cloud</groupId>
         <artifactId>spring-cloud-alibaba-dependencies</artifactId>
-        <version>0.2.2.RELEASE</version>
+        <version>${alibaba-cloud.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -146,11 +142,6 @@
       <artifactId>fastjson</artifactId>
       <version>1.2.70</version>
     </dependency>
-    <dependency>
-      <groupId>org.springframework.cloud</groupId>
-      <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
-    </dependency>
-
     <!-- jasypt 加盐 -->
     <dependency>
       <groupId>com.github.ulisesbocchio</groupId>
@@ -171,6 +162,14 @@
       <artifactId>spring-boot-admin-starter-client</artifactId>
       <version>2.3.0</version>
     </dependency>-->
+    <dependency>
+      <groupId>com.alibaba.cloud</groupId>
+      <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.alibaba.cloud</groupId>
+      <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+    </dependency>
 
 
   </dependencies>
@@ -180,6 +179,8 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
       </plugin>
+<!--      mvn jasypt:encrypt-value -Djasypt.encryptor.password="f4e2e52034348f86b67cde581c0f9eb5" -Djasypt.plugin.value="nacos"-->
+<!--      mvn jasypt:decrypt-value -Djasypt.encryptor.password="f4e2e52034348f86b67cde581c0f9eb5" -Djasypt.plugin.value="hswSHfJWHX333EWpNnFXWi1OTj7tMOcZPkmWSOZovuH7VxUAPHVN2ef2YahjhFsw"-->
       <plugin>
         <groupId>com.github.ulisesbocchio</groupId>
         <artifactId>jasypt-maven-plugin</artifactId>
@@ -205,6 +206,14 @@
             </goals>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>8</source>
+          <target>8</target>
+        </configuration>
       </plugin>
       <!--  jacoco plugin end -->
     </plugins>
