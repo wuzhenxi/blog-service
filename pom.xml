@@ -5,12 +5,16 @@
   <groupId>com.wzx</groupId>
   <artifactId>blog</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+  <packaging>jar</packaging>
   <name>blog</name>
   <description>blog project for Spring Boot and vue</description>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <maven-javadoc.version>3.2.0</maven-javadoc.version>
+    <maven-source.version>3.2.0</maven-source.version>
+    <maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
     <spring-boot.version>2.3.4.RELEASE</spring-boot.version>
     <alibaba-cloud.version>2.2.3.RELEASE</alibaba-cloud.version>
     <java.version>1.8</java.version>
@@ -178,6 +182,7 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
+        <version>${spring-boot.version}</version>
       </plugin>
 <!--      mvn jasypt:encrypt-value -Djasypt.encryptor.password="f4e2e52034348f86b67cde581c0f9eb5" -Djasypt.plugin.value="nacos"-->
 <!--      mvn jasypt:decrypt-value -Djasypt.encryptor.password="f4e2e52034348f86b67cde581c0f9eb5" -Djasypt.plugin.value="hswSHfJWHX333EWpNnFXWi1OTj7tMOcZPkmWSOZovuH7VxUAPHVN2ef2YahjhFsw"-->
@@ -207,12 +212,43 @@
           </execution>
         </executions>
       </plugin>
+      <!--javadoc-->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>${maven-javadoc.version}</version>
+        <executions>
+          <execution>
+            <id>attach-javadocs</id>
+            <phase>package</phase>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <!--javadoc-->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <version>${maven-javadoc.version}</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>jar-no-fork</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
+        <version>${maven-compiler-plugin.version}</version>
         <configuration>
-          <source>8</source>
-          <target>8</target>
+          <source>1.8</source>
+          <target>1.8</target>
+          <encoding>UTF-8</encoding>
         </configuration>
       </plugin>
       <!--  jacoco plugin end -->
