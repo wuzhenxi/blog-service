@@ -8,7 +8,7 @@ VOLUME /tmp
 MAINTAINER "Jesse Wu <wyyxwzx@163.com>"
 
 # 暴露端口
-EXPOSE 8081
+EXPOSE 8083
 
 ARG JAR_FILE=target/blog-0.0.1-SNAPSHOT.jar
 
@@ -16,4 +16,4 @@ ARG JAR_FILE=target/blog-0.0.1-SNAPSHOT.jar
 ADD ${JAR_FILE} blog-service.jar
 
 # 启动镜像自动运行程序
-ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom", "-Dspring.profiles.active=pro", "-jar", "/blog-service.jar"]
+ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom", "-jar", "/blog-service.jar"]
