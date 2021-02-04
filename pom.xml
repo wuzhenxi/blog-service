@@ -284,8 +284,8 @@
           </execution>
         </executions>
       </plugin>
-<!--      mvn jasypt:encrypt-value -Djasypt.encryptor.password="f4e2e52034348f86b67cde581c0f9eb5" -Djasypt.plugin.value="nacos"-->
-<!--      mvn jasypt:decrypt-value -Djasypt.encryptor.password="f4e2e52034348f86b67cde581c0f9eb5" -Djasypt.plugin.value="hswSHfJWHX333EWpNnFXWi1OTj7tMOcZPkmWSOZovuH7VxUAPHVN2ef2YahjhFsw"-->
+<!--      mvn jasypt:encrypt-value -Djasypt.encryptor.password="f4e2e52034348f86b67cde581c0f9eb5" -Djasypt.plugin.value="huawei123@"-->
+<!--      mvn jasypt:decrypt-value -Djasypt.encryptor.password="f4e2e52034348f86b67cde581c0f9eb5" -Djasypt.plugin.value="zEt49qiexqeGO0Jt+UAp/7l8V85WCsK1uwpiXp9hwi+fK9utxT7tLDqHT/NYE013"-->
       <plugin>
         <groupId>com.github.ulisesbocchio</groupId>
         <artifactId>jasypt-maven-plugin</artifactId>
