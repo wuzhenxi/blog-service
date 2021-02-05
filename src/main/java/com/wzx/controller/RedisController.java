@@ -22,7 +22,7 @@ public class RedisController {
     @Autowired
     private MessagePub messagePub;
 
-    @PostMapping("/publish")
+    @PostMapping(value = "/publish", produces = "text/html;charset=utf-8")
     public String sendMessage (@RequestParam("msg") String msg) {
         return messagePub.sendMessage(msg);
     }
