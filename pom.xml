@@ -185,27 +185,6 @@
 
   </dependencies>
 
-  <profiles>
-    <profile>
-      <!--不同环境Profile的唯一id-->
-      <id>dev</id>
-      <properties>
-        <!--profiles.active是自定义的字段，自定义字段可以有多个-->
-        <docker.host>http://127.0.0.1:2375</docker.host>
-      </properties>
-      <!--activation用来指定激活方式，可以根据jdk环境，环境变量，文件的存在或缺失-->
-      <activation>
-        <!--这个字段表示默认激活-->
-        <activeByDefault>true</activeByDefault>
-      </activation>
-    </profile>
-    <profile>
-      <id>prod</id>
-      <properties>
-        <docker.host>http://139.9.176.197:2375</docker.host>
-      </properties>
-    </profile>
-  </profiles>
   <build>
     <finalName>${project.artifactId}-${project.version}</finalName>
     <plugins>
@@ -262,7 +241,7 @@
           <cmd>["java", "-version"]</cmd>
           <entryPoint>["java","-Djava.security.egd=file:/dev/./urandom", "-jar", "/${project.build.finalName}.jar"]</entryPoint>
           <!--指定远程 docker api地址-->
-          <dockerHost>${docker.host}</dockerHost>
+          <dockerHost>http://127.0.0.1:2375</dockerHost>
           <!-- 这里是复制 jar 包到 docker 容器指定目录配置 -->
           <resources>
             <resource>
